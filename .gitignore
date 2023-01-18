@@ -1,0 +1,8 @@
+*.toc
+*.aux
+*.log
+*.pdf
+*.gz
+
+/testcode
+/.vscode
