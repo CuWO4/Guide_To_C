@@ -3,6 +3,7 @@
 *.log
 *.pdf
 *.gz
+*.synctex.*
 
 /testcode
 /.vscode

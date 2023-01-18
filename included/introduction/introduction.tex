@@ -1,0 +1,122 @@
+\label{导言区}
+
+\usepackage[heading=true]{ctex}
+\usepackage{commath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{bookmark}
+\usepackage{booktabs}
+\usepackage{amssymb}
+\usepackage{verbatim}
+\usepackage{framed}
+\usepackage{mdframed}
+\usepackage{enumitem}
+\usepackage{threeparttable}
+\usepackage[perpage]{footmisc}
+\usepackage{blindtext}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{wallpaper}
+
+\usepackage{amsmath}
+\allowdisplaybreaks
+
+\usepackage{color}
+\usepackage{xcolor}
+\definecolor{linenumbercolor}{RGB}{128,138,135}     % 代码环境行号数字颜色
+\definecolor{keywordcolor}{RGB}{3,95,205}           % 代码环境关键字颜色
+\definecolor{commentcolor}{RGB}{34,139,34}          % 代码环境注释颜色
+\definecolor{stringcolor}{RGB}{128,0,0}             % 代码环境字符串颜色
+\definecolor{backgroundcolor}{RGB}{245,245,244}     % 代码背景颜色
+
+\usepackage{hyperref}
+\hypersetup{
+    pdfpagelayout=TwoColumnLeft,
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=blue,      
+    urlcolor=blue,
+}
+
+\mdfsetup{
+    linecolor=darkgray,
+}
+
+\usepackage{geometry}
+\geometry{inner=3.5cm, outer=2.5cm, top=3.5cm, bottom=3.5cm}
+\setlength{\headheight}{15pt}
+
+\usepackage{setspace}
+\onehalfspacing
+\addtolength{\parskip}{1em}
+
+\usepackage{titlesec}   % 这段代码能够修改前言, 说明和后记的章节标题样式, 原理未知, 为什么不修改正文章节标题未知.
+\makeatletter
+\renewcommand{\@makeschapterhead}[1]{%
+  \vspace*{20\p@}%
+  {\parindent \z@
+    \normalfont
+    \interlinepenalty\@M
+    \Huge \bfseries  #1\par\nobreak
+    \vskip 20\p@
+  }}
+\makeatother
+
+\ctexset{
+    chapter={
+        name={第,章},
+        format+=\heiti
+        
+    },
+    section={
+        format+={\raggedright\Large\heiti}
+    },
+}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LO]{\bfseries\leftmark}
+\fancyhead[RE]{\bfseries\rightmark}
+\fancyfoot[LO,RE]{\bfseries\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0pt}
+\addtolength{\headheight}{0.5pt}
+\fancypagestyle{plain}{
+  \pagestyle{fancy}
+}
+
+\usepackage{afterpage}
+\newcommand\emptypage{
+    \null
+    \thispagestyle{empty}
+    \addtocounter{page}{-1}
+    \newpage
+}
+
+\usepackage{listings}
+\lstset{
+    escapeinside=@@,                                        %  逃逸字符
+    numbers=left,                                           %  在左侧显示行号
+    numberstyle=\color[RGB]{128,138,135},                   %  设置行号格式
+    basicstyle=\footnotesize,                               %  设置代码字号.
+    basicstyle=\tt,                                         %  设置代码字体
+    breaklines=true,                                        %  设置自动断行.
+    extendedchars=true,                                     %  是否允许使用非ASCII字符; 仅适用于8位编码，不适用于UTF-8.
+    extendedchars=false,                                    %  解决代码跨页时，章节标题，页眉等汉字不显示的问题
+    xleftmargin=2em,xrightmargin=2em, aboveskip=1em,        %  设置边距
+    tabsize=4,                                              %  设置tab空格数
+    showspaces=false                                        %  不显示空格
+    frame=none,                                             %  不显示背景边框
+    backgroundcolor=\color[RGB]{245,245,244},               %  设定背景颜色
+    keywordstyle=\color[RGB]{3,95,205},                     %  设定关键字颜色
+    commentstyle=\tt\color[RGB]{34,139,34},                 %  设置代码注释的格式
+    stringstyle=\color[RGB]{128,0,0},                       %  设置字符串格式
+    showstringspaces=false,                                 %  不显示字符串中的空格
+    language=c++,                                           %  设置语言
+    morekeywords={alignas,continute,friend,register,true,alignof,decltype,goto,reinterpret_cast,try,asm,defult,if,return,typedef,auto,delete,inline,short,typeid,bool,do,int,signed,typename,break,double,long,sizeof,union,case,dynamic_cast,mutable,static,unsigned,catch,else,namespace,static_assert,using,char,enum,nestatic_cast,virtual,char16_t,char32_t,explict,noexcept,struct,void,export,nullptr,switch,volatile,class,extern,operator,template,wchar_t,const,false,private,this,while,constexpr,float,protected,thread_local,const_cast,for,public,throw,std},
+}
+
+\newcommand{\sla}{\texttt{\textbackslash}}

@@ -1,0 +1,821 @@
+\chapter{函数} \label{函数} 
+    C语言被称为面向过程语言, 简单地说就是函数式编程. 可以说C语言组织代码结构的核心就是函数. 有了函数, 我们的代码可以更模块化, 更低耦合, 也就是说功能和功能之间互相依赖更小, 方便我们添加新功能和修改旧功能, 而不必牵一发而动全身.
+
+    编程语言中的函数和数学中的函数不同, 虽然它们的英文都是Function, 但前者更偏向于``功能''的意项. 函数除了可以实现根据参数返回一个值外, 还可以执行若干指令.
+
+    \section{函数的定义和使用} \label{函数的定义和使用}
+        函数的定义形如
+        \begin{center}
+        \begin{longtable}{l}
+            \texttt{类型~标识符\hspace*{-0.25pt}(类型\hspace*{-0.25pt}1~参数\hspace*{-0.25pt}1, 类型\hspace*{-0.25pt}2~参数\hspace*{-0.25pt}2,...)\{} \\
+            \qquad \texttt{语句块} \\
+            \texttt{\}}
+        \end{longtable}
+        \end{center}
+
+        其中\texttt{类型}除了包括变量可以声明的几种类型外, 还可以为\texttt{void}无类型. 参数可以有若干个, 也可以没有, 它们前面的类型分别表示它们的类型. 语句块被称为这个函数的函数体. 若类型不是无类型, 那函数体中至少需要包含一个\texttt{return}语句. 一个函数被定义后, 我们就可以在后文中调用它, 调用的方法为 \texttt{标识符\hspace*{-0.25pt}(参数\hspace*{-0.25pt}1, 参数\hspace*{-0.25pt}2,...)}, 那么代码运行至此时就会执行\texttt{标识符}对应函数的函数体. 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+void func(){
+    printf("abcd\n");
+
+    int arr[3] = { 0 };
+    for(int i = 0; i < 3; i++){
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+int main(){
+
+    printf("start\n");
+
+    func();
+
+    printf("end\n");
+
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+
+        我们定义了一个无类型无参数函数\texttt{func()}, 调用它时会先打印\texttt{abcd}, 然后定义一个数组\texttt{arr}并初始化元素为0, 然后逐个打印其中的元素. 程序仍然会从主函数开始, 那么我们就会先打印\texttt{start}, 然后调用\texttt{func()}, 然后打印\texttt{end}. 故输出为
+\lstset{
+    numbers=none,
+    keywordstyle=\color[RGB]{0,0,0},
+    commentstyle=\color[RGB]{0,0,0},
+    stringstyle=\color[RGB]{0,0,0}
+}
+\begin{lstlisting}
+start
+abcd
+0 0 0
+end
+\end{lstlisting}
+\lstset{
+    numbers=left,
+    keywordstyle=\color[RGB]{3,95,205},
+    commentstyle=\color[RGB]{34,139,34},
+    stringstyle=\color[RGB]{128,0,0}
+}
+
+        注意到主函数其实也是一个函数, 这也是它为什么被称为主``函数''.
+
+        我们也可以为\texttt{func}设置一个参数, 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+void func(int n){
+    printf("abcd\n");
+
+    int arr[100] = { 0 };
+    for(int i = 0; i < n; i++){
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+int main(){
+
+    printf("start\n");
+
+    func(5);
+
+    printf("end\n");
+
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+
+        我们为\texttt{func()}函数添加了一个参数\texttt{n}, 在函数体输出\texttt{arr}的前\texttt{n}个元素. 在主函数中我们为\texttt{func}传入了5, 那么\texttt{func}中的\texttt{n}就等于5, 于是就会输出\texttt{arr}中的前5个元素. 故输出为
+\lstset{
+    numbers=none,
+    keywordstyle=\color[RGB]{0,0,0},
+    commentstyle=\color[RGB]{0,0,0},
+    stringstyle=\color[RGB]{0,0,0}
+}
+\begin{lstlisting}
+start
+abcd
+0 0 0 0 0
+end
+\end{lstlisting}
+\lstset{
+    numbers=left,
+    keywordstyle=\color[RGB]{3,95,205},
+    commentstyle=\color[RGB]{34,139,34},
+    stringstyle=\color[RGB]{128,0,0}
+}
+
+        我们也可以为\texttt{func}设置一个返回值, 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int func(int n){
+    printf("abcd\n");
+
+    int arr[100] = { 0 };
+    for(int i = 0; i < n; i++){
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    return 10;
+}
+
+int main(){
+
+    printf("start\n");
+
+    int a = func(5);
+
+    printf("end\n");
+
+    printf("a: %d\n", a);
+
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+
+        \texttt{func}这时会返回10, 相当于我们调用\texttt{func()}时, 它会被看作一个返回值为10的表达式. 那么主函数中\texttt{a}的值就为10. 故输出为
+\begin{lstlisting}
+start
+abcd
+0 0 0 0 0
+end
+a: 10
+\end{lstlisting}
+
+        函数也可以被多次调用, 有返回值的函数也不一定需要用变量来承接它的返回值, 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int func(int n){
+    printf("abcd\n");
+
+    int arr[100] = { 0 };
+    for(int i = 0; i < n; i++){
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    return 10;
+}
+
+int main(){
+
+    func(3);
+
+    int a = func(5);
+
+    printf("a: %d\n", a);
+
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+
+        输出为
+\lstset{
+    numbers=none,
+    keywordstyle=\color[RGB]{0,0,0},
+    commentstyle=\color[RGB]{0,0,0},
+    stringstyle=\color[RGB]{0,0,0}
+}
+\begin{lstlisting}
+abcd
+0 0 0
+abcd
+0 0 0 0 0
+a: 10
+\end{lstlisting}
+\lstset{
+    numbers=left,
+    keywordstyle=\color[RGB]{3,95,205},
+    commentstyle=\color[RGB]{34,139,34},
+    stringstyle=\color[RGB]{128,0,0}
+}
+
+        但是我们本节中定义的\texttt{func()}函数是很丑陋的, 因为它是一些没有关系的功能的堆砌. 关于什么时候需要定义一个函数, 我们\textbf{建议}采用下面的规范:
+        \begin{itemize}
+            \item 每一个函数只完成一个特定的功能, 当有两个功能需要被完成时, 就定义两个独立的函数.
+            \item 当一个功能需要多次出现时, 把它定义为函数.
+            \item 当一个功能的实现需要超过两层嵌套是, 把嵌套的内部定义为函数.
+        \end{itemize}
+
+        例如第\ref{简单的排序算法}节中提到的冒泡排序, 它是一个相对独立的, 并且可能需要被多次调用的功能, 所以我们更好的做法是把代码写作:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int bubble_sort(int arr[], int len){
+    while(1){
+        int flag = 1;
+
+        for(int i = 0; i < len - 1; i++){
+            if(arr[i] > arr[i + 1]){
+                int temp = arr[i];
+                arr[i] = arr[i + 1];
+                arr[i + 1] = temp;
+                flag = 0;
+            }
+        }
+
+        if(flag == 1){
+            break;
+        }
+    }
+
+    return 0;
+}
+
+int main(){
+    return 0;
+}
+\end{lstlisting}
+
+        注意, 这段代码中有些参数传递的问题是我们还没有解释的, 后面的小节中将详细介绍.
+
+        如此这般, 冒泡排序这个功能就被我们抽象出来了, 当我们在任何地方需要用到它时, 直接把需要排序的数组和数组长度作为参数传递给它就可以了. 而主函数中也不一定需要出现冒泡排序的代码了. 当我们需要测试冒泡排序功能时, 我们可以再定义一个函数\texttt{test()}:
+\begin{lstlisting}
+int test(){
+    int n = 0, arr[100] = { 0 };
+    scanf("%d", &n);
+    for(int i = 0; i < n; i++){
+        scanf("%d", &arr[i]);
+    }
+
+    bubble_sort(arr, n);
+
+    for(int i = 0; i < n; i++){
+        printf("%d ", arr[i]);
+    }
+
+    printf("\n");
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+
+        而在主函数中直接调用\texttt{test()}即可, 当我们不需要测试时只需要简单把主函数中\texttt{test()}的调用删去即可. 这就是模块化和解耦合.
+
+        此外, 我们\textbf{不推荐}把函数定义为无类型函数, 我们\textbf{建议}把一个不需要返回值的函数定义为整型, 当它正确运行时返回0, 当它出现异常情况时返回一个非零值. 例如C语言规范中规定\texttt{main()}函数就是这么做的.
+
+        其实我们在前面的章节中已经见过一些函数了, 例如\texttt{printf()}函数和\texttt{scanf()}函数. 当我们引用头文件时, 就相当于把头文件中的这些函数包含到我们的代码中来, 允许我们在代码中调用它们.
+
+    \section{函数的声明}
+        和变量相似, 在没有本节将介绍的声明的情况下, 函数只能在函数定义之后调用. 但是函数中是可以调用别的函数的, 首先大型项目数百数千个函数, 按照调用顺序依次排列很繁琐; 其次打开代码映入眼帘的先是各种高度模块化的函数, 却不知道这些函数被用来干什么了, 代码阅读时思想负担很重; 最致命的是两个函数相互调用时, 代码不可能编译通过. 因此, 我们在C语言中可以声明函数.
+        
+        一个函数的声明形如
+        \begin{center}
+        \begin{longtable}{l}
+            \texttt{类型~标识符\hspace*{-0.25pt}(类型\hspace*{-0.25pt}1~参数\hspace*{-0.25pt}1, 类型\hspace*{-0.25pt}2~参数\hspace*{-0.25pt}2,...);}
+        \end{longtable}
+        \end{center}
+
+        简而言之就是函数定义的第一行. 我们也可以省去\texttt{参数}, 写作
+        \begin{center}
+        \begin{longtable}{l}
+            \texttt{类型~标识符\hspace*{-0.25pt}(类型\hspace*{-0.25pt}1, 类型\hspace*{-0.25pt}2,...);}
+        \end{longtable}
+        \end{center}
+
+        函数被定义了, 相当于告诉编译器有这么一个函数, 只需要在代码中任意位置补上这个函数的定义(也称为函数的实现), 就可以在函数定义之后调用这个函数了. 例如第\ref{函数的定义和使用}节中冒泡排序的代码可以写作:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int bubble_sort(int arr[], int len); // sort the arr, whose length equals to len
+int test();
+
+int main(){
+    test();
+    return 0;
+}
+
+int test(){
+    int n = 0, arr[100] = { 0 };
+    scanf("%d", &n);
+    for(int i = 0; i < n; i++){
+        scanf("%d", &arr[i]);
+    }
+
+    bubble_sort(arr, n);
+
+    for(int i = 0; i < n; i++){
+        printf("%d ", arr[i]);
+    }
+
+    printf("\n");
+    system("pause");
+
+    return 0;
+}
+
+int bubble_sort(int arr[], int len){
+    while(1){
+        int flag = 1;
+
+        for(int i = 0; i < len - 1; i++){
+            if(arr[i] > arr[i + 1]){
+                int temp = arr[i];
+                arr[i] = arr[i + 1];
+                arr[i + 1] = temp;
+                flag = 0;
+            }
+        }
+
+        if(flag == 1){
+            break;
+        }
+    }
+
+    return 0;
+}
+\end{lstlisting}
+
+        虽然主函数中调用\texttt{test()}时它还没被定义, 但在代码开头已经声明过它了, 所以调用是合法的. 编译器会自动在后续代码中寻找\texttt{test()}函数的定义, 并把它们链接到一起.
+
+        我们\textbf{建议}在大型项目中使用如下的代码结构规范:
+        \begin{description}
+            \item[第一部分] 用注释说明程序目的, 修改日期, 修改作者等信息, 然后编写预处理命令(例如引入头文件, 第\ref{预处理命令}章将介绍).
+            \item[第二部分] 声明全局变量(第\ref{变量的作用域}节将介绍).
+            \item[第三部分] 声明需要用到的所有函数, 并添加注释表明函数功能.
+            \item[第四部分] 主函数. 主函数中不包含任何功能性代码, 只应包含表明程序最基础逻辑结构的语句, 和实现具体功能的函数的调用. 
+            \item[第五部分] 实现所有函数. 
+        \end{description}
+
+    \section{函数的参数}
+        函数定义时的参数被称为形式参数(简称形参), 调用时的参数被称为实际参数(简称实参). 例如下面的例子
+\begin{lstlisting}
+int func(int a, double b){
+    return 0;
+}
+
+int main(){
+    func(1, 2.5);
+    return 0;
+}
+\end{lstlisting}
+        中, \texttt{a}和\texttt{b}就是形参, \texttt{1}和\texttt{2.5}就是实参.
+
+        我们也可以设置数组形参和字符串形参, 设置的方法例如下面的例子:
+\begin{lstlisting}
+int func1(int arr1[], int *arr2, int arr3[10]){
+    return 0;
+}
+
+int func2(int arr[][5]){
+    return 0;
+}
+
+int func3(char str1[], char *str2){
+    return 0;
+}
+\end{lstlisting}
+
+        其中, \texttt{func1}展示了设置一维数组形参的三种形式, \texttt{arr1}和\texttt{arr2}是不定长的, \texttt{arr3}是定长为10的. \texttt{func2}展示了设置二维数组形参的方式, 需要注意只有第一个中括号中的长度是可省的. \texttt{func3}展示了设置字符串形参的方式. 这些写法的含义我们会在第\ref{指针}章和第\ref{字符串}章讲解.
+
+        形参和实参的类型, 数量都要一一对应, 调用时, 实参会被赋值给形参. 故前文提到的的代码就可以理解为
+        \begin{center}
+        \begin{longtable}{l}
+            \texttt{a = 1;} \\
+            \texttt{b = 2.5;}
+        \end{longtable}
+        \end{center}
+
+        如果这样, 那么我们就应该注意到一个容易被新手忽略的问题: 函数中对形参的操作, 是不会对实参产生影响的, 因为形参只是实参的一个副本, 而非实参本身. 例如下面的例子
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int swap(int x, int y){
+    int temp = x;
+    x = y;
+    y = temp;
+    return 0;
+}
+
+int main(){
+    int a = 1, b = 2;
+
+    swap(a, b);
+    
+    printf("a: %d  b: %d\n", a, b);
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+        中, 我们尝试用\texttt{swap}函数交换两个数的值, 但是输出仍然为
+\lstset{
+    numbers=none,
+    keywordstyle=\color[RGB]{0,0,0},
+    commentstyle=\color[RGB]{0,0,0},
+    stringstyle=\color[RGB]{0,0,0}
+}
+\begin{lstlisting}
+1 2
+\end{lstlisting}
+\lstset{
+    numbers=left,
+    keywordstyle=\color[RGB]{3,95,205},
+    commentstyle=\color[RGB]{34,139,34},
+    stringstyle=\color[RGB]{128,0,0}
+}
+
+        也就是说\texttt{a}, \texttt{b}并没有被交换. 那么交换是否发生了呢? 其实在函数体中, \texttt{x}和\texttt{y}的值确实被交换了, 但它们只是\texttt{a}和\texttt{b}的副本, 不会影响\texttt{a}和\texttt{b}的值.
+
+        但基础数据类型中, 两个特例是字符串和数组. 例如第\ref{函数的定义和使用}节中冒泡排序函数的代码, 显然改变了\texttt{arr}中元素的值. 这和我们提到的规则是否违背? 其实不违背. 这些现象的原因是什么? 对于普通的数据类型我们怎么实现在函数中改变实参的值? 我们将在第\ref{指针}章中讲解.
+
+    \section{变量的作用域} \label{变量的作用域}
+        每个变量都有其作用域, 只有在其作用域之内它才能被调用, 而作用域结束时, 作用域中声明的所有变量会被操作系统回收. 例如下面的例子
+\begin{lstlisting}
+int func(int a){
+    a = 1;
+    return 0;
+}
+
+int main(){
+    int a = 2;
+    a++;
+    return 0;
+}
+\end{lstlisting}
+        中, \texttt{a}在\texttt{func()}中被声明了, 在主函数中也被声明了, 但编译器并没有报错. 这是因为前者的作用域局限于\texttt{func()}函数中, 而后者的作用域局限于主函数中, 二者是两个不同的变量. 因此, 我在主函数中令\texttt{a}自增和\texttt{func()}中的\texttt{a}没有关系, 反之亦然.
+
+        此外, 在一个函数中, 每个大括号规定了一个作用域. 例如下面的例子
+\begin{lstlisting}
+int main(){
+
+    for(int i = 0; i < 5; i++){
+        int a;
+    }
+
+    int a;
+
+    return 0;
+}
+\end{lstlisting}
+        中, 第一个\texttt{a}被声明在了\texttt{for}规定的作用域中, 在\texttt{for}结束时就被回收了, 所以我们可以再一次声明\texttt{a}.
+
+        此外, 下面的代码也是合法的:
+\begin{lstlisting}
+int main(){
+
+    int a;
+
+    for(int i = 0; i < 5; i++){
+        int a;
+    }
+
+    return 0;
+}
+\end{lstlisting}
+
+        因为小作用域中可以重新声明大作用域中的变量. 那么如果我们在小作用域中调用\texttt{a}, 它指代的是哪个变量呢? 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+
+    int a = 1;
+
+    for(int i = 0; i < 5; i++){
+        int a;
+        a = 2;
+    }
+
+    printf("%d\n", a);
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+
+        输出为
+\lstset{
+    numbers=none,
+    keywordstyle=\color[RGB]{0,0,0},
+    commentstyle=\color[RGB]{0,0,0},
+    stringstyle=\color[RGB]{0,0,0}
+}
+\begin{lstlisting}
+1
+\end{lstlisting}
+\lstset{
+    numbers=left,
+    keywordstyle=\color[RGB]{3,95,205},
+    commentstyle=\color[RGB]{34,139,34},
+    stringstyle=\color[RGB]{128,0,0}
+}
+        所以小作用域中如果重新定义了变量, 小作用域中对这个标识符的调用, 调用的是小作用域中的变量, 而对大作用域中的变量没有影响.
+
+        此外, 定义在所有函数之外的变量被称为全局变量, 它的作用域是整个程序, 所有的函数都可以访问它, 与之相对应的, 定义在函数中的变量被称为局部变量. 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int a = 1;
+
+int func(){
+    a++;
+
+    return 0;
+}
+
+int main(){
+    printf("%d\n", a);
+
+    func();
+
+    printf("%d\n", a);
+    
+    return 0;
+}
+\end{lstlisting}
+
+        将输出
+\lstset{
+    numbers=none,
+    keywordstyle=\color[RGB]{0,0,0},
+    commentstyle=\color[RGB]{0,0,0},
+    stringstyle=\color[RGB]{0,0,0}
+}
+\begin{lstlisting}
+1
+2
+\end{lstlisting}
+\lstset{
+    numbers=left,
+    keywordstyle=\color[RGB]{3,95,205},
+    commentstyle=\color[RGB]{34,139,34},
+    stringstyle=\color[RGB]{128,0,0}
+}
+
+        \begin{sloppypar}
+        一般情况下, 全局变量可使用的内存空间更大. 例如如果在主函数中声明\texttt{int arr[100000000];}, 那么这个数组会占用\texttt{100000000 $\times$ 4B = 4E8B = 381MB}内存, 而一般局部变量总共只能使用2MB的内存空间, 故程序会因使用超出可用内存的内存而发生段错误意外结束. 但如果我把这个数组声明为全局变量, 全局变量可使用的内存,粗糙地说, 取决于电脑内存大小, 381MB对于数G内存而言不过毛毛雨, 则不会发生段错误.
+        \end{sloppypar}
+
+        在个人代码中, 我们不反对定义全局变量. 但在更复杂的代码例如工程代码中, 由于变量数太多, 全局变量可能引入很多问题, 我们\textbf{不推荐}定义全局变量.
+
+    \section{函数的返回值}
+        函数可以使用\texttt{return}语句返回一个值. 语法形如
+        \begin{center}
+        \begin{longtable}{l}
+            \texttt{return 表达式;}
+        \end{longtable}
+        \end{center}
+
+        函数将返回表达式的值, 然后函数结束.
+
+        当函数类型为无类型时, 也可以使用
+        \begin{center}
+        \begin{longtable}{l}
+            return;
+        \end{longtable}
+        \end{center}
+        表示函数结束.
+
+        此外, 我们也可以在函数运行中使用\texttt{return}语句, 来中途停止函数运行, \texttt{return}语句后的所有内容将不再被执行. 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int func(){
+    int a = 0;
+
+    return 0; // 以下的内容将不会被执行.
+
+    printf("%d\n", a);
+
+    return 0;
+}
+
+int main(){
+
+    func();
+
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+
+        运行后可以发现, 程序并没有打印\texttt{a}.
+
+        这常被用于在函数开头时检查输入是否合法, 或是否到达边际条件, 如果输入可能导致函数运行异常, 则提前跳出函数. 例如第\ref{函数的定义和使用}节中的冒泡排序函数可以修改为:
+\begin{lstlisting}
+int bubble_sort(int arr[], int len){
+    if(len < 0){
+        return -1;
+    }
+
+    while(1){
+        int flag = 1;
+
+        for(int i = 0; i < len - 1; i++){
+            if(arr[i] > arr[i + 1]){
+                int temp = arr[i];
+                arr[i] = arr[i + 1];
+                arr[i + 1] = temp;
+                flag = 0;
+            }
+        }
+
+        if(flag == 1){
+            break;
+        }
+    }
+
+    return 0;
+}
+\end{lstlisting}
+
+        若数组长度小于零, 直接返回-1表示不合法的输入, 并不再运行后续代码.
+
+        我们\textbf{建议}总是在函数开头判断异常情况.
+
+    \section{递归} 
+        函数也可以调用自己, 这种情况被称为递归. 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+
+int func(){
+
+    printf("Ha");
+
+    func();
+
+    return 0;
+}
+
+int main(){
+
+    func();
+
+    return 0;
+}
+\end{lstlisting}
+
+        我们调用\texttt{func()}后, 它将打印\texttt{Ha}, 然后调用\texttt{func()}, 再次调用的\texttt{func()}中又将再次调用\texttt{func()}, 如此往复. 但是程序运行一段时间后就自己停止了, 这是因为当递归层数过多时, 会发生爆栈错误. 所以递归程序我们一定要设置边际条件, 到达边际条件时递归停止. 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+
+int func(int n){
+    if(n <= 0){
+        return 0;
+    }
+
+    printf("Ha");
+
+    func(n - 1);
+
+    return 0;
+}
+
+int main(){
+
+    func(10);
+
+    return 0;
+}
+\end{lstlisting}
+
+        我们为\texttt{func()}设置了一个形参\texttt{n}来控制它, 当形参小于等于0时, 不再向下递归. 而每次递归调用自己时, 传入的参数减1, 故当我们输入一个正数\texttt{n}时, \texttt{func()}会被调用\texttt{n + 1}次, 并输出\texttt{n}个\texttt{Ha}.
+
+    \section{实例: 斐波那契数列}
+        我们举一个例子, 来展示递归程序的应用.
+
+        其中, 斐波那契数列$\{F_n\}$满足
+        \begin{align}
+            &F_n = F_{n-1} + F_{n-2} \qquad (n \geq 3) \tag{1} \label{eq-F1} \\
+            &F_1 = F_2 = 1 \tag{2} \label{eq-F2}
+        \end{align}
+
+        我们还是从最朴素的想法出发. 我们设置函数\texttt{F(int n)}表示第\texttt{n}项, 把式\ref{eq-F2}当作递归的边际条件, 若不满足边际条件, 则利用式\ref{eq-F1}向下递归运算, 然后加上输入合法性判定, 我们有:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+unsigned long F(int n){
+    if(n < 1){ // 非法输入
+        return 0;
+    }
+
+    if(n == 1 || n == 2){ // 边际条件
+        return 1;
+    }
+
+    return F(n - 1) + F(n - 2);
+}
+
+int main(){
+    int n = 0;
+    scanf("%d", &n);
+
+    printf("%lu\n", F(n));
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+
+        例如我们输入6, 程序正确输出了8. 读者可以大脑当CPU, 纸当内存, 脑测这段代码的运行, 来了解递归程序的运行机制.
+
+        但读者可以尝试输入45, 这并不是一个很大的数, 但是程序却运行了一会才给出答案, 而读者可以尝试输入70(其实$F_70$已经溢出了), 程序此时的运行时间可能需要数万年. 因此这段代码是急需优化的!
+
+        我们先来考虑为什么会需要这么久. 我们输入45, 那么\texttt{F(44)}和\texttt{F(43)}被调用了,故 \texttt{F(44)}被调用了1次, 而\texttt{F(44)}又会调用\texttt{F(43)}和\texttt{F(42)}, 故 \texttt{F(43)}被调用了2次, 以次类推, \texttt{F(42)}被调用了4次, \texttt{F(41)}被调用了8次,..., \texttt{F(2)}被调用了$2^{44} \approx \mbox{\texttt{1.7E13}}$次. 而程序总共发生多少次调用呢? $2^0 + 2^1 + ... + 2^{44} = 2^{45} - 1 \approx \mbox{\texttt{1.7E13}}$次! 而随着\texttt{n}的增大, 运行时长也呈指数型增长.
+
+        究其原因, 是因为发生了大量的重复计算. 例如8次\texttt{F(41)}的调用中, 显然只有第一次是必要的, 然而剩余7次仍然运行了, 并重复计算了\texttt{F(41)}的值. 因此我们可以考虑建立一个全局数组\texttt{Fib}, 用来储存斐波那契数列的值. 当递归程序运行时, 先检查数组是否已知此项的值了, 若已知, 则直接返回, 若未知, 在进行递归计算. 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+unsigned long Fib[100000] = { 0 };
+
+unsigned long F(int n){
+    if(n < 1){ // 非法输入
+        return 0;
+    }
+
+    if(n == 1 || n == 2){ // 边际条件
+        return 1;
+    }
+
+    if(Fib[n] != 0){
+        return Fib[n];
+    }else{
+        Fib[n] = F(n - 1) + F(n - 2);
+        return Fib[n];
+    }
+}
+
+int main(){
+    int n = 0;
+    scanf("%d", &n);
+
+    printf("%lu\n", F(n));
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+
+        这时得出结果已经很快了. 当然, 读者可能已经发现, 这里的递归是并不必要的, 因为我们可以把代码改成:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+unsigned long Fib[100000] = { 0 };
+
+unsigned long F(int n){
+    Fib[1] = 1;
+    Fib[2] = 1;
+
+    for(int i = 3; i <= n; i++){
+        Fib[i] = Fib[i - 1] + Fib[i - 2];
+    }
+
+    return Fib[n];
+}
+
+int main(){
+    int n = 0;
+    scanf("%d", &n);
+
+    printf("%lu\n", F(n));
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+        
+        我们用递推代替了递归, 这不仅避免了\texttt{n}过大时爆栈, 也优化掉了调用函数所需的时间. 这段代码也尚有很多优化空间, 读者可以自行尝试.
+
+        除了运行效率上的优化, 我们还可以优化代码支持的范围. 但是关于支持的范围的优化是无止境的, 因为只要我们需要的$F_n$足够大, 再大的内存空间也不够用. 归根结底, 优化都是无止境的, 关键要看问题的需求. 在实际应用中, 满足需求的代码就是好代码, 追求完美优化往往适得其反.
+        
+        当然, 正如指南中其它例子展示的那样, 这并不是最好的解决方法. 最好的方法是利用斐波那契数列满足
+            \[ F_n = \dfrac{1}{\sqrt{5}} \left[ \left( \dfrac{\sqrt{5} + 1}{2} \right)^n - \left( \dfrac{\sqrt{5} - 1}{2} \right)^n \right] \]
+        来计算. 这个式子可以用母函数法, 特征值法等方法证明, 求幂级数可以使用快速幂算法优化. 有读者可能担心根号5使用\texttt{double}类型储存可能在数据很大时引入误差, 其实这也可以靠模p数域解决. 读者可以自行了解.
+
+        此外, 一种效率优秀, 用时稳定, 并且还满足一些其它性质的排序算法———归并排序也是使用递归实现的. 读者可以自行了解.
+
+        总结:
+        \begin{itemize}
+            \item 递归程序常常比较抽象复杂, 需要先逻辑推演清楚.
+            \item 一个优秀的递归程序效率很高, 与此同时一个劣质的递归程序效率可能非常低, 使用递归一定要慎重.
+        \end{itemize}

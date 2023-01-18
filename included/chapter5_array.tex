@@ -1,0 +1,389 @@
+\chapter{数组} \label{数组}
+    本节将介绍一种新的数据储存形式: 数组. 它在储存连续的数据上有优良的特性.
+
+    \section{一维数组}
+        一个一维数组(在不引起歧义的情况下, 简称数组)的声明形如
+        \begin{center}
+        \begin{longtable}{l}
+            \texttt{类型~标识符\hspace*{-0.25pt}[长度] = \{~初始值~\};}
+        \end{longtable}
+        \end{center}
+
+        这将开辟一个储存有\texttt{长度}个数据的, 每个数据的类型都为\texttt{类型}的, 名字为\texttt{标识符}的数组. 多个\texttt{初始值}之间用逗号隔开, 会被逐个顺序赋值给数组中的数据. 数组中的数据被称为元素. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    int arr[5] = { 5, 3, 4, 2, 1 };
+
+    return 0;
+}
+\end{lstlisting}
+        声明了一个长度为5的数组\texttt{arr}, 其中的元素依次为5, 3, 4, 2, 1.
+
+        当我们声明一个数组时初始化了时, 我们可以省略长度, 数组的长度会被默认声明为初始值的个数. 例如上面的代码和下面的例子是等价的:
+\begin{lstlisting}
+int main(){
+    int arr[] = { 5, 3, 4, 2, 1 };
+
+    return 0;
+}
+\end{lstlisting}
+
+        特别地, 我们也可以把初始值写作一个单独的0, 来表示把数组中所有元素初始化为0. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    int arr[5] = { 0 };
+
+    return 0;
+}
+\end{lstlisting}
+        声明了一个长度为5的数组arr, 其中的元素依次为0, 0, 0, 0, 0.
+
+        我们\textbf{建议}, 对于所有无特殊初始值的数组, 都使用这种方法把元素都初始化为0.
+
+        我们可以使用中括号访问数组中的第n个元素, 语法形如
+        \begin{center}
+        \begin{longtable}{l}
+            \texttt{标识符\hspace*{-0.25pt}[n]}
+        \end{longtable}
+        \end{center}
+
+        其中n被称为索引. 注意, 这里的\texttt{n}是从0开始编号的, 也就是说第0个元素才是我们常言说的第1个. 所以这里的第n个其实是我们常言说的第n + 1个. 我们将在第\ref{指针}章中解释这样设计有什么好处. 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    int arr[5] = { 5, 3, 4, 2, 1};
+
+    arr[3] = 7;
+    printf("%d %d", arr[0], arr[3]);
+
+    printf("\n");
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+
+        我们先把\texttt{arr}中的第3个元素改为了7, 然后打印了其中的第0和第3个元素. 输出为
+\lstset{
+    numbers=none,
+    keywordstyle=\color[RGB]{0,0,0},
+    commentstyle=\color[RGB]{0,0,0},
+    stringstyle=\color[RGB]{0,0,0}
+}
+\begin{lstlisting}
+5 7
+\end{lstlisting}
+\lstset{
+    numbers=left,
+    keywordstyle=\color[RGB]{3,95,205},
+    commentstyle=\color[RGB]{34,139,34},
+    stringstyle=\color[RGB]{128,0,0}
+}
+
+        索引必须要满足
+            \[ 0 \leq \mbox{\texttt{索引}} < \mbox{\texttt{数组长度}}. \]
+
+        否则会发生意料之外的错误, 被称为数组越界. 例如一个长度为5的数组, 我们不能尝试访问它第10个数.
+
+        此外, 数组也常和\texttt{for}循环共用, 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    int arr[5] = { 5, 3, 4, 2, 1};
+
+    for(int i = 0; i < 5; i++){
+        arr[i]++;
+    }
+
+    for(int i = 0; i < 5; i++){
+        printf("%d ", arr[i]);
+    }
+
+    printf("\n");
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+
+        这段程序先用循环变量\texttt{i}遍历了数组\texttt{arr}, 使其中的每个元素都自增1. 然后又依次打印了\texttt{arr}中的每个元素. 故输出为
+\lstset{
+    numbers=none,
+    keywordstyle=\color[RGB]{0,0,0},
+    commentstyle=\color[RGB]{0,0,0},
+    stringstyle=\color[RGB]{0,0,0}
+}
+\begin{lstlisting}
+6 4 5 3 2 
+\end{lstlisting}
+\lstset{
+    numbers=left,
+    keywordstyle=\color[RGB]{3,95,205},
+    commentstyle=\color[RGB]{34,139,34},
+    stringstyle=\color[RGB]{128,0,0}
+}
+
+        读者需要注意这里\texttt{for}语句的格式, 它的循环变量是定义在左闭右开区间$[0, n)$上的, 其中n是数组的长度. 换言之循环变量被初始化为开始位置的索引, 而循环条件为它小于所需截取的长度. 这样的格式在很多特殊条件下也能产生符合直觉的结果, 我们\textbf{建议}读者使用.
+
+    \section{二维数组和高维数组}
+        我们可以通过语法
+            \begin{center}
+            \begin{longtable}{l}
+                \texttt{类型~标识符\hspace*{-0.25pt}[n][m] = \{ 初始值 \};}
+            \end{longtable}
+            \end{center}
+        来声明一个二维数组, 它的长度为\texttt{n}, 元素为长度为\texttt{m}的一维数组. 也就是说它是元素为数组的数组. 二维数组的初始值用大括号包裹, 内部形如一维数组的初始值, 大括号之间用逗号隔开. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    int arr[3][2] = { { 0, 1 }, { 7, 8 }, { 4, 5 } };
+
+    return 0;
+}
+\end{lstlisting}
+
+        就声明了一个二维数组, 它有三个元素, 每个元素是一个长度为2的整型一维数组. 它们依次分别是
+
+        0, 1
+
+        7, 8
+
+        4, 5
+
+        特别地, 和一维数组相似, 初始值单列一个0虽然不符合二维数组初始值的语法, 但也表示把所有(数组中的)元素初始化为0. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    int arr[3][2] = { 0 };
+
+    return 0;
+}
+\end{lstlisting}
+
+        二维数组也可以用中括号来访问, 但需要注意二维数组用中括号访问一次得到的是一个数组, 需要对这个数组再用中括号访问一次, 才能得到对应位置的值. 例如前文定义的\texttt{arr}是二维数组, \texttt{arr[1]}表示的是\texttt{arr}中储存的第1个数组, 我们如果想得到这个数组的第0个值, 我们需要使用\texttt{arr[1][0]}. 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    int arr[3][2] = { { 0, 1 }, { 7, 8 }, { 4, 5 } };
+
+    printf("%d\n", arr[1][0]);
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+
+        这段代码将输出\texttt{arr}中储存的第1个数组的第0个值, 即7. 故输出为
+\lstset{
+    numbers=none,
+    keywordstyle=\color[RGB]{0,0,0},
+    commentstyle=\color[RGB]{0,0,0},
+    stringstyle=\color[RGB]{0,0,0}
+}
+\begin{lstlisting}
+7
+\end{lstlisting}
+\lstset{
+    numbers=left,
+    keywordstyle=\color[RGB]{3,95,205},
+    commentstyle=\color[RGB]{34,139,34},
+    stringstyle=\color[RGB]{128,0,0}
+}
+
+        二维数组之所以被称为``二维'', 是因为它也可以被理解为把数据排成一个方阵, 第一个索引表示行, 第二个索引表示列. 例如下面的例子将以方阵形式输出\texttt{arr}:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    int arr[3][2] = { { 0, 1 }, { 7, 8 }, { 4, 5 } };
+
+    printf("\t%4d%4d\n\n", 0, 1);
+    for(int i = 0; i < 3; i++){
+        printf("%4d\t", i);
+        for(int j = 0; j < 2; j++){
+            printf("%4d", arr[i][j]);
+        }
+        printf("\n");
+    }
+
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+
+        它的输出为
+\lstset{
+    numbers=none,
+    keywordstyle=\color[RGB]{0,0,0},
+    commentstyle=\color[RGB]{0,0,0},
+    stringstyle=\color[RGB]{0,0,0}
+}
+\begin{lstlisting}
+            0   1
+
+    0       0   1
+    1       7   8
+    2       4   5
+\end{lstlisting}
+\lstset{
+    numbers=left,
+    keywordstyle=\color[RGB]{3,95,205},
+    commentstyle=\color[RGB]{34,139,34},
+    stringstyle=\color[RGB]{128,0,0}
+}
+
+        所以\texttt{arr[1][0]}也可以看作第1行第0列的元素, 故为7. 所以二维数组常常被用来表示矩阵. 
+
+        类似地, 我们可以定义三维数组, 四维数组等, 不再赘述.
+
+    \section{实例: 简单的排序算法} \label{简单的排序算法}
+        算法学中的一个基础内容就是排序算法, 指的是通过一系列操作, 把一个数组中的元素从小到大(或从大到小)排列. 本节介绍两种最基础的排序算法, 冒泡排序和选择排序.
+
+        \subsection*{冒泡排序}
+            冒泡排序基于一个朴素的思想: 如果我们想让一组数据从小到大排序, 那么就不断交换其中相邻的, 前一个大, 后一个小的数据对, 直至数据有序. 例如对于数组
+                \[ 3, 4, 1, 5 \]
+
+            我们从(3, 4)开始检查, (3, 4)顺序合理, 检查下一个; (4, 1)顺序不合理, 交换, 数组变为3, 1, 4, 5; (4, 5)顺序合理, 检查下一个. 到达最后一组, 停止第一轮, 数组变为
+                \[ 3, 1, 4, 5 \]
+
+            我们接着从(3, 1)开始检查, 顺序不合理, 交换, 数组变为(1, 3); 后面的数据对顺序都合理, 保持不变, 停止第二轮, 数组变为
+                \[ 1, 3, 4, 5 \]
+
+            我们接着检查, 发现每一组的顺序都合理, 所以数组已经有序, 结束程序.
+
+            把思路总结起来, 要实现冒泡排序, 我们首先需要设置一个变量\texttt{flag}, 来表示数组是否有序. 然后需要设置一个外层死循环, 在循环中我们依次做三件事:
+            \begin{itemize}
+                \item 把\texttt{flag}初始化为1.
+                \item 遍历数组, 检查每对数据的顺序是否合理: \\
+                      若合理, 不做任何事. \\
+                      若不合理, 交换它们, 并把flag更新为0. 
+                \item 检查\texttt{flag}的值, 若为1, 则跳出循环.
+            \end{itemize}
+
+            我们称这样形似代码的有逻辑结构的文本为伪代码, 它通常能帮助我们理清思路, 并把思路翻译成代码.
+
+            我们来解释这里设置\texttt{flag}的方式为什么有效. 我们在每轮循环中先假定数据是有序的(\texttt{flag = 1}), 然后执行主要的部分(比较数据对), 在执行过程中, 如果没有发生交换, 说明数据的确是有序的, 与此同时\texttt{flag}会保持1, 那么我们就能在结束主要部分后跳出循环; 若在执行过程中交换了数据, 那么说明我们对数据有序的假定是错误的, 同时我们也不能保证在完成本轮之后它就会变成有序的, 因此我们把\texttt{flag}设为0, 再进行一轮, 并把判断本轮循环后是否有序的任务移交给下一轮循环.
+
+            我们把它翻译成代码:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    int n, arr[100] = { 0 };
+    scanf("%d", &n);
+    for(int i = 0; i < n; i++){
+        scanf("%d", &arr[i]);
+    }
+
+    while(1){
+        int flag = 1;
+
+        for(int i = 0; i < n - 1; i++){
+            if(arr[i] > arr[i + 1]){
+                int temp = arr[i];
+                arr[i] = arr[i + 1];
+                arr[i + 1] = temp;
+                flag = 0;
+            }
+        }
+
+        if(flag == 1){
+            break;
+        }
+    }
+
+    for(int i = 0; i < n; i++){
+        printf("%d ", arr[i]);
+    }
+
+    printf("\n");
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+
+            几个值得注意的点:
+            \begin{enumerate}
+                \item 这段代码的输入格式是先输入我们需要排序的数组的长度, 再依次输入数据, 用空格隔开.
+                \item 我们先把\texttt{arr}的长度定义为了100, 而接下来的代码中我们把它当作了一个长度为n的数组使用. 因此我们需要保证我们待排序的数组长度不大于100. 我们在第\ref{变长数组}中讲解为什么要这么做, 以及我们现在可以怎么做.
+                \item 在交换两个值时, 由于直接写\texttt{arr[i] = arr[i + 1];}那么\texttt{arr[i]}的数据就会因被覆盖掉而丢失, 所以我们需要定义一个中间变量\texttt{temp}. 具体交换的方法代码语义已经很显然了.
+                \item 主体部分我们的遍历上限是\texttt{n - 1}, 因为\texttt{n}个数据中只有\texttt{n - 1}组数据对. 读者可以自行尝试改成\texttt{n}会有什么结果, 想想这是为什么.
+            \end{enumerate}
+
+            例如我们如果输入
+\lstset{
+    numbers=none,
+    keywordstyle=\color[RGB]{0,0,0},
+    commentstyle=\color[RGB]{0,0,0},
+    stringstyle=\color[RGB]{0,0,0}
+}
+\begin{lstlisting}
+5
+1 4 3 7 2
+\end{lstlisting}
+\lstset{
+    numbers=left,
+    keywordstyle=\color[RGB]{3,95,205},
+    commentstyle=\color[RGB]{34,139,34},
+    stringstyle=\color[RGB]{128,0,0}
+}
+
+            程序将输出
+\lstset{
+    numbers=none,
+    keywordstyle=\color[RGB]{0,0,0},
+    commentstyle=\color[RGB]{0,0,0},
+    stringstyle=\color[RGB]{0,0,0}
+}
+\begin{lstlisting}
+1 2 3 4 7 
+\end{lstlisting}
+\lstset{
+    numbers=left,
+    keywordstyle=\color[RGB]{3,95,205},
+    commentstyle=\color[RGB]{34,139,34},
+    stringstyle=\color[RGB]{128,0,0}
+}
+
+            说明我们的程序是成功的. 读者也可以尝试更大规模的数据样本. 当然, 在此基础上仍然有很多优化空间, 读者可以自行尝试.
+
+        \subsection*{选择排序}
+            选择排序基于另一个朴素的思想, 如同我们理扑克牌, 我们从左手中选取最小的一张放到右手, 如此反复直到左手不剩牌, 那么右手的牌就是有序的. 读者可以自行尝试设计, 实现, 优化.
+        
+        这两种排序算法需要使用两层循环, 按照前面我们学过的知识, 我们知道在数据规模很大时它们的效率很低. 除了这两种最简单的排序算法外, 最常用的排序算法有快速排序和归并排序等, 针对特殊情况效率很高的排序算法有桶排序等. 读者可以自行了解.
+
+    \section{\texttt{*}变长数组\texttt{*}} \label{变长数组}
+        我们在前文中所有数组在声明时的长度都是一个确定的值, 这其实是历史原因, 最早的C语言标准中数组的长度必须是在编译时就确定的. 但是C99标准\footnote{最早的C语言没有标准, 各大编译器厂商自行实现, 这导致了不同的编译器编译同一段代码可能产生不同的结果. 于是1989年, ANSI(American National Standards Institute, 美国国家标准化协会的缩写)制定了第一版C语言标准C89. 而后C语言也不断发展, 陆续推出了C99, C11, C17等标准(后续的标准的更新大多是关于C++而非C的), 它们允许了某些新特性.}允许以变量的值为数组的长度进行声明. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    int n = 10;
+    
+    int arr[n];
+
+    return 0;
+}
+\end{lstlisting}
+
+        但是上面的代码中一旦数组被声明了, 它的长度和\texttt{n}就没有任何关系了, 例如下面的例子
+\begin{lstlisting}
+int main(){
+    int n = 10;
+    
+    int arr[n];
+
+    n += 5;
+
+    return 0;
+}
+\end{lstlisting}
+        中, 执行完\texttt{n}自增5后, 并不会使\texttt{arr}的长度增长5.
+
+        但是由于一方面C89标准中这样的代码时错误的, 在部分嵌入式开发中可能遇到因C语言标准过低而报错的问题; 另一方面C++并不支持这样的特性, 养成这样的习惯可能对未来读者学习C++带来障碍, 所以我们\textbf{不太推荐}这么做. 当然我们可以通过别的方法实现变长数组, 虽然会更麻烦一些, 但上面提到的这些兼容性问题都不存在, 我们将在第\ref{申请内存和内存泄漏}节中介绍.
