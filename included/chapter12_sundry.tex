@@ -279,6 +279,21 @@ int main(){
         当\texttt{const}修饰指针时, 有两种情况.
 
         \begin{description}
-            \item[\texttt{const int *p}] 表示\texttt{p}指向的数据是常量, \texttt{*p}不能修改; 但\texttt{p}本身的值, 即指向谁是可修改的. 
-            \item[\texttt{int *const p}] 表示\texttt{p}本身是常量, \texttt{p}不能修改, 即指向谁不能修改; 但\texttt{*p}可以修改. 
+            \item[\texttt{const int *p}] 表示\texttt{p}指向的数据是常量, \texttt{*p}不能修改; 但\texttt{p}本身的值, 即指向谁是可修改的. 此时称\texttt{p}为常量指针.
+            \item[\texttt{int *const p}] 表示\texttt{p}本身是常量, \texttt{p}不能修改, 即指向谁不能修改; 但\texttt{*p}可以修改. 此时称\texttt{p}为指针常量.
         \end{description}
+
+        此外, 形如\texttt{const int *const p;}表示\texttt{p}本身指向谁不可修改, 同时\texttt{p}指向的数据不可修改.
+
+        但需要注意的是, 下面的代码是允许的:
+\begin{lstlisting}
+int main(){
+    int a = 0;
+    const int *p = &a;
+    a = 10;
+
+    return 0;
+}
+\end{lstlisting}
+
+        也就是说常量指针指向的数据, 不一定是常量.
