@@ -271,7 +271,7 @@ int main(){
             我们来解释这里设置\texttt{flag}的方式为什么有效. 我们在每轮循环中先假定数据是有序的(\texttt{flag = 1}), 然后执行主要的部分(比较数据对), 在执行过程中, 如果没有发生交换, 说明数据的确是有序的, 与此同时\texttt{flag}会保持1, 那么我们就能在结束主要部分后跳出循环; 若在执行过程中交换了数据, 那么说明我们对数据有序的假定是错误的, 同时我们也不能保证在完成本轮之后它就会变成有序的, 因此我们把\texttt{flag}设为0, 再进行一轮, 并把判断本轮循环后是否有序的任务移交给下一轮循环.
 
             我们把它翻译成代码:
-\begin{lstlisting}
+\begin{lstlisting} [caption=\ ,label=c_arr_bubble_1]
 #include <stdio.h>
 #include <stdlib.h>
 

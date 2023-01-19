@@ -231,7 +231,7 @@ kk
             \end{itemize}
 
             \begin{mdframed}[linecolor=darkgray]
-            有时我们需要先输入一个数, 然后立即对这个数进行判断, 例如下面的例子
+            有时我们需要先输入一个数, 然后立即对这个数进行判断, 例如下面的例子:
 \begin{lstlisting}
 #include <stdio.h>
 #include <stdlib.h>
@@ -324,7 +324,7 @@ int main(){
                 \end{longtable}
                 \end{center}
 
-                例如下面的例子
+                例如下面的例子:
 \begin{lstlisting}
 #include <stdio.h>
 #include <stdlib.h>
@@ -645,7 +645,17 @@ int main(){
 
             读者也可以想想:
             \begin{enumerate}
-                \item 第8行代码能不能写作\texttt{unsigned long res = n / 6 * (n + 1) * (2 * n + 1);} ? 为什么? 怎样改正这种写法的错误之处? 改正后相较于第8行的写法有什么优势? (答案见\ref{平方和公式答案})
+                \item 第8行代码能不能写作\texttt{unsigned long res = n / 6 * (n + 1) * (2 * n + 1);} ? 为什么? 怎样改正这种写法的错误之处? 改正后相较于第8行的写法有什么优势? \footnote{
+                    由于这些问题较困难, 下面贴出答案:
+                    \begin{enumerate}
+                        \item 不能.
+                        \item 因为当\texttt{n}为奇数时, 表达式\texttt{n / 2}因为是整型除以整型, 会发生舍去小数部分, 并不严格等于数学上的$\dfrac{n}{2}$, 从而导致结果错误.
+                        \item 应当先判断\texttt{n}的奇偶, 根据\texttt{n}的奇偶分别使用: \\
+                              \texttt{(n + 1) / 2 * n * (2 * n + 1)}~~~~(n为奇数) \\
+                              \texttt{n / 6 * (n + 1) * (2 * n + 1)}~~~~(n为偶数)
+                        \item 读者可是试着输入1200, 看看两种方法的输出各是多少. 可以看到第一种发生了意料之外的错误, 而第二种则输出了正确的答案. 这是因为中间的结果其实也是整型, 而在运算过程中产生的中间变量过大, 则可能发生溢出, 发生意料之外的错误. 例如第一种方法由左向右运算, 当计算完第二次乘号时, $1200 \times 1201 \times 2401$已经太大了, \texttt{int}无法支持发生了溢出, 此后再除以6, 也只能得到一个错误的结果. 而第二种方法则先除以了6, 使得中间变量的数值大大减小了, 没有发生溢出, 故输出了正确的结果.
+                    \end{enumerate}
+                }
                 \item 求积式该如何用代码求出? 例如 $\displaystyle \prod ^n _{i = 1}\,\, i$
             \end{enumerate}
 
@@ -944,7 +954,7 @@ int main(){
 
         当 \texttt{表达式\vspace*{-1pt}1} 为真时, 它返回 \texttt{表达式\vspace*{-1pt}2} , 否则返回 \texttt{表达式\vspace*{-1pt}3} .
 
-        例如
+        例如:
 \begin{lstlisting}
 int main(){
     int a = 10, b = 5;

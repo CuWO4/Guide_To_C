@@ -539,7 +539,7 @@ int main(){
 }
 
             我们也可以用 \texttt{.} 后加一个数字修饰, 表示精确到小数点后几位, 不足的补零, 也可以和最小宽度连用. 例如下面的例子:
-\begin{lstlisting}
+\begin{lstlisting} [caption=\ ,label=c_io_floatoutput]
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -592,6 +592,8 @@ int main(){
     return 0;
 }
 \end{lstlisting}
+
+            这段代码和代码\ref{c_io_floatoutput}是等价的.
 
         \subsection*{\texttt{scanf()}}
             \texttt{scanf()}的基本格式与\texttt{printf()}类似, 形如

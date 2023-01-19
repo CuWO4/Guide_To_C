@@ -57,9 +57,19 @@
     \vspace*{-20pt}
         \[ \mbox{指南中形如这样的内容表示强调的式子.} \]
 
-\begin{lstlisting}
-//指南中形如这样的内容表示代码.
+\begin{lstlisting} [caption=\ ,label=c_prefaceEx]
+//指南中形如这样的内容表示代码. 它们在会被引用时编号.
 \end{lstlisting}
+
+% label naming:
+%   c   :   code
+%   l   :   line
+%       +
+%  chapter name
+%       +
+%     name
+%       +
+%  (serial num)
 
 \lstset{
     numbers=none,
@@ -78,7 +88,7 @@
 }
 
     \vspace*{5pt}
-    指南中\href{https://www.baidu.com}{形如这样的内容}表示链接, 可以点击跳转到对应的图, 表, 网页, 注释或章节. 手机端可能无法使用此功能.
+    指南中\href{https://www.baidu.com}{形如这样的内容}表示链接, 可以点击跳转到对应的图, 表, 网页, 注释, 章节或其它支持跳转的组件. 手机端可能无法使用此功能.
 
     \begin{mdframed}[linecolor=darkgray]
         代码中形如这样的内容表示涉及到 \texttt{*}章节\texttt{*} 内容的文本.

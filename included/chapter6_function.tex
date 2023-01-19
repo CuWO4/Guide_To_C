@@ -214,7 +214,7 @@ a: 10
             \item 当一个功能的实现需要超过两层嵌套是, 把嵌套的内部定义为函数.
         \end{itemize}
 
-        例如第\ref{简单的排序算法}节中提到的冒泡排序, 它是一个相对独立的, 并且可能需要被多次调用的功能, 所以我们更好的做法是把代码写作:
+        例如第冒泡排序\ref{c_arr_bubble_1}, 它是一个相对独立的, 并且可能需要被多次调用的功能, 所以我们更好的做法是把代码写作:
 \begin{lstlisting}
 #include <stdio.h>
 #include <stdlib.h>
@@ -292,8 +292,8 @@ int test(){
         \end{longtable}
         \end{center}
 
-        函数被定义了, 相当于告诉编译器有这么一个函数, 只需要在代码中任意位置补上这个函数的定义(也称为函数的实现), 就可以在函数定义之后调用这个函数了. 例如第\ref{函数的定义和使用}节中冒泡排序的代码可以写作:
-\begin{lstlisting}
+        函数被定义了, 相当于告诉编译器有这么一个函数, 只需要在代码中任意位置补上这个函数的定义(也称为函数的实现), 就可以在函数定义之后调用这个函数了. 例如第冒泡排序\ref{c_arr_bubble_1}可以写作:
+\begin{lstlisting} [caption=\ ,label=c_func_bubble_2]
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -358,8 +358,8 @@ int bubble_sort(int arr[], int len){
         \end{description}
 
     \section{函数的参数}
-        函数定义时的参数被称为形式参数(简称形参), 调用时的参数被称为实际参数(简称实参). 例如下面的例子
-\begin{lstlisting}
+        函数定义时的参数被称为形式参数(简称形参), 调用时的参数被称为实际参数(简称实参). 例如下面的例子:
+\begin{lstlisting} [caption=\ ,label=c_func_funcvar]
 int func(int a, double b){
     return 0;
 }
@@ -388,7 +388,7 @@ int func3(char str1[], char *str2){
 
         其中, \texttt{func1}展示了设置一维数组形参的三种形式, \texttt{arr1}和\texttt{arr2}是不定长的, \texttt{arr3}是定长为10的. \texttt{func2}展示了设置二维数组形参的方式, 需要注意只有第一个中括号中的长度是可省的. \texttt{func3}展示了设置字符串形参的方式. 这些写法的含义我们会在第\ref{指针}章和第\ref{字符串}章讲解.
 
-        形参和实参的类型, 数量都要一一对应, 调用时, 实参会被赋值给形参. 故前文提到的的代码就可以理解为
+        形参和实参的类型, 数量都要一一对应, 调用时, 实参会被赋值给形参. 故代码\ref{c_func_funcvar}就可以理解为
         \begin{center}
         \begin{longtable}{l}
             \texttt{a = 1;} \\
@@ -396,7 +396,7 @@ int func3(char str1[], char *str2){
         \end{longtable}
         \end{center}
 
-        如果这样, 那么我们就应该注意到一个容易被新手忽略的问题: 函数中对形参的操作, 是不会对实参产生影响的, 因为形参只是实参的一个副本, 而非实参本身. 例如下面的例子
+        如果这样, 那么我们就应该注意到一个容易被新手忽略的问题: 函数中对形参的操作, 是不会对实参产生影响的, 因为形参只是实参的一个副本, 而非实参本身. 例如下面的例子:
 \begin{lstlisting}
 #include <stdio.h>
 #include <stdlib.h>
@@ -617,7 +617,7 @@ int main(){
 
         运行后可以发现, 程序并没有打印\texttt{a}.
 
-        这常被用于在函数开头时检查输入是否合法, 或是否到达边际条件, 如果输入可能导致函数运行异常, 则提前跳出函数. 例如第\ref{函数的定义和使用}节中的冒泡排序函数可以修改为:
+        这常被用于在函数开头时检查输入是否合法, 或是否到达边际条件, 如果输入可能导致函数运行异常, 则提前跳出函数. 例如冒泡排序\ref{c_func_bubble_2}的函数体可以修改为:
 \begin{lstlisting}
 int bubble_sort(int arr[], int len){
     if(len < 0){
