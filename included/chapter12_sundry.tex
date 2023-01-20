@@ -164,6 +164,8 @@ int main(){
 \end{lstlisting}
         会报错. 这和使用\texttt{\#define}定义新类型是不同的.
 
+        \texttt{typedef}的意义在于有时我们需要一种特殊的代码内部信息交换格式, 例如接口\texttt{Interface}, 它的值表示调用第几接口, 然而本质上它不过是一个整型变量. 如果我们在需要接口的地方都使用\texttt{int}, 未免容易引起混淆; 但若使用\texttt{typedef int Interface;}, 那么接口变量的语义就显然了. 用一个稍粗糙的比喻来说明, 就是``同样是一块毛巾, \texttt{typedef}告诉我们这块毛巾用来擦脸, 还是用来擦脚.''
+
     \section{随机数}
         标准库\texttt{stdlib.h}中包括了一个随机数生成模块. 其中, 我们使用\texttt{srand(unsigned)}设置随机数种子, 使用\texttt{rand()}生成一个随机数. 例如下面的例子:
 \begin{lstlisting}
