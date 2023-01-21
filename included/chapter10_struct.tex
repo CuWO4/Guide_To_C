@@ -142,6 +142,10 @@ int swap(struct STUDENT *a, struct STUDENT *b){
 }
 
 int bubble_sort(struct STUDENT arr[], int len){
+    if(len < 0){
+        return -1;
+    }
+
     while(1){
         int flag = 1;
         for(int i = 0; i < len - 1; i++){
@@ -187,6 +191,10 @@ Carol: 93
     此外, 利用函数指针, 我们可以编写泛用性更广的排序. 例如下面的例子:
 \begin{lstlisting}
 int bubble_sort(struct STUDENT arr[], int len, int (*comp)(struct STUDENT a, struct STUDENT b)){
+    if(len < 0){
+        return -1;
+    }
+
     while(1){
         int flag = 1;
         for(int i = 0; i < len - 1; i++){
@@ -204,22 +212,6 @@ int bubble_sort(struct STUDENT arr[], int len, int (*comp)(struct STUDENT a, str
 \end{lstlisting}
 
     其中, 形参\texttt{comp()}指定排序方法. 它的规则是, 对于一对相邻数据, 当有序时, 它返回真, 否则返回假.
-
-    那么如果我们还想实现和刚刚相同的按成绩从低到高排序, 我们只需要编写\texttt{comp1()}函数如下:
-\begin{lstlisting}
-int comp1(struct STUDENT a, struct STUDENT b){
-    if(a.score < b.score){
-        return 1;
-    }else{
-        return 0;
-    }
-}
-\end{lstlisting}
-    并在调用\texttt{bubble\_sort()}时使用:
-\begin{lstlisting}
-bubble_sort(class_L9, N, comp1);
-\end{lstlisting}
-    即可.
 
     如果我们现在想实现按照首字母顺序排序, 那么我们只需要编写\texttt{comp2()}函数如下(默认首字母大写):
 \begin{lstlisting}

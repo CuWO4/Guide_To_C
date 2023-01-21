@@ -215,7 +215,7 @@ a: 10
         \end{itemize}
 
         例如第冒泡排序\ref{c_arr_bubble_1}, 它是一个相对独立的, 并且可能需要被多次调用的功能, 所以我们更好的做法是把代码写作:
-\begin{lstlisting}
+\begin{lstlisting} [caption=\ ,label=c_func_bubble_1]
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -245,7 +245,7 @@ int main(){
 }
 \end{lstlisting}
 
-        注意, 这段代码中有些参数传递的问题是我们还没有解释的, 后面的小节中将详细介绍.
+        注意, 这段代码中有些参数传递的问题是我们还没有解释的, 后面的章节中将详细介绍.
 
         如此这般, 冒泡排序这个功能就被我们抽象出来了, 当我们在任何地方需要用到它时, 直接把需要排序的数组和数组长度作为参数传递给它就可以了. 而主函数中也不一定需要出现冒泡排序的代码了. 当我们需要测试冒泡排序功能时, 我们可以再定义一个函数\texttt{test()}:
 \begin{lstlisting}
@@ -357,7 +357,7 @@ int bubble_sort(int arr[], int len){
             \item[第五部分] 实现所有函数. 
         \end{description}
 
-    \section{函数的参数}
+    \section{函数的参数} \label{函数的参数}
         函数定义时的参数被称为形式参数(简称形参), 调用时的参数被称为实际参数(简称实参). 例如下面的例子:
 \begin{lstlisting} [caption=\ ,label=c_func_funcvar]
 int func(int a, double b){
@@ -618,7 +618,7 @@ int main(){
         运行后可以发现, 程序并没有打印\texttt{a}.
 
         这常被用于在函数开头时检查输入是否合法, 或是否到达边际条件, 如果输入可能导致函数运行异常, 则提前跳出函数. 例如冒泡排序\ref{c_func_bubble_2}的函数体可以修改为:
-\begin{lstlisting}
+\begin{lstlisting} [caption=\ ,label=c_func_bubble_3]
 int bubble_sort(int arr[], int len){
     if(len < 0){
         return -1;

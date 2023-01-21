@@ -1,12 +1,523 @@
 \chapter{指针} \label{指针}
     有人说, 指针是C语言的灵魂, 其形容是否过度暂且不表, 指针确实在C语言中发挥着异常重要的作用. 除此之外, 指针也揭开了程序运行中诸多现象的本质, 前文中大量奇怪的程序行为背后的原因都将在本章中得到解答.
 
+    注意, 本节内容可能较难, 遇到一时难以想通的地方, 读者要仔细思考, 或用程序实验. 想通之后, 就基本学通了C语言了.
+
     \section{变量在内存中的储存}
+        每个变量都被储存在内存中. 内存被逐字节排序, 从\texttt{0x0000 0000}到\texttt{0xFFFF FFFF}(这远远低估了地址的范围, 实际上根据64位系统和32位系统的差异, 寻址范围各有区别且都远大于此), 每一位被排到的序号就称为这一位的地址. 一个变量占用的内存位中, 最小的地址被称为这个变量的地址\footnote{本节这些讨论只是理想情况, 实际情况有大小端等分别.}. 例如一个\texttt{unsigned int}型的变量, 占用4位内存, 值为\texttt{0xF00F FF00}. 假设它的地址为0x0061FDF4, 那么内存排布将形如表\ref{内存排布表}.
+        \begin{table}[htbp]
+            \centering
+            \begin{tabular}{c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c}
+                \hline
+                \multirow{2}{*}{\Large \dots} & \multicolumn{8}{|c|}{\texttt{0x0061FDF4}} & \multicolumn{8}{|c|}{\texttt{0x0061FDF5}} \\
+                \cline{2-17}
+                & 1 & 1 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & \multicolumn{1}{|c|}{1} \\
+                \hline
+                \multicolumn{17}{c}{ }\\
+                \multicolumn{17}{c}{ }\\
+                \hline
+                \multicolumn{8}{|c|}{\texttt{0x0061FDF6}} & \multicolumn{8}{|c|}{\texttt{0x0061FDF7}} & \multirow{2}{*}{\Large \dots} \\
+                \cline{1-16}
+                \multicolumn{1}{|c|}{1} & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \\
+                \hline
+            \end{tabular}
+            \caption{内存排布表} \label{内存排布表}
+        \end{table}
+
+        已知地址, 那么CPU就可以访问该地址, 读取或写入对应地址中储存的值. 我们的程序中对变量的所有操作, 都是基于此, 变量的本质也就是对应内存地址中的值.
+
+        例如\texttt{x = a + b;}在CPU看来, 就是取出\texttt{a}指代的地址中的值, 然后取出\texttt{b}指代的地址中的值, 对它们执行加法运算, 然后把结果写入\texttt{x}指代的地址.
+
+        操作变量地址的工具就是指针. 几乎所有高级语言都禁止了指针, 因为它太过底层. 所以C语言是最接近底层, 最接近硬件的高级语言.
+
     \section{指针的定义和使用}
+        指针的声明形如
+        \begin{center}
+        \begin{longtable}{l}
+            \texttt{数据类型 *\hspace*{-0.25pt}标识符\hspace*{-0.25pt};}
+        \end{longtable}
+        \end{center}
+
+        其中数据类型是这个指针要储存地址的变量的类型. \texttt{*}只表示它后面一个变量是指针. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    int a, *p, b; // a, b是普通变量, p是指针.
+
+    return 0;
+}
+\end{lstlisting}
+
+        \texttt{\&}称为取址运算符, 给定变量\texttt{a}, \texttt{\&a}将返回它的地址, 可以赋值给对应类型的指针. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    int a = 10;
+    int *p = &a;
+
+    return 0;
+}
+\end{lstlisting}
+
+        p中就储存有a的地址了, 此时称\texttt{p}指向\texttt{a}.
+
+        指针在\texttt{printf()}中的控制符为\texttt{\%p}, 将会以十六进制格式输出指针, 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    int a = 10;
+    int *p = &a;
+
+    printf("%p\n", p);
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+        将输出\texttt{a}的地址. 多次运行输出不同, 这是因为每次运行系统分配给\texttt{a}的地址都不同. 但是在同一次运行内, \texttt{a}的地址是不会变的, 在声明\texttt{a}时就已确定.
+
+        \texttt{*}被称为取值运算符, 给定指针\texttt{p}, \texttt{*p}表示\texttt{p}指向的变量的值. 注意这和指针声明时的星号无关. 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    int a = 10;
+    int *p = &a;
+
+    printf("%d %d\n", a, *p);
+
+    *p = 5;
+
+    printf("%d\n", a);
+
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+        将输出
+\lstset{
+    numbers=none,
+    keywordstyle=\color[RGB]{0,0,0},
+    commentstyle=\color[RGB]{0,0,0},
+    stringstyle=\color[RGB]{0,0,0}
+}
+\begin{lstlisting}
+10 10
+5
+\end{lstlisting}
+\lstset{
+    numbers=left,
+    keywordstyle=\color[RGB]{3,95,205},
+    commentstyle=\color[RGB]{34,139,34},
+    stringstyle=\color[RGB]{128,0,0}
+}
+
+        我们也可以定义指针数组, 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    int *p[3];
+
+    int a, b, c;
+
+    p[0] = &a;
+    p[1] = &b;
+    p[2] = &c;
+
+    printf("%24p %24p %24p\n", p[0], p[1], p[2]);
+
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+
+        读者可能发现输出不是两两相隔4字节的, 也就是说我们连续定义的三个变量\texttt{a}, \texttt{b}和\texttt{c}在内存中却不是连续排列的, 这是因为我们运行程序时, 还有大量其它进程在运行, 内存在吐息之间变化很大, 操作系统因此会为它们分配不同的地址.
+
+        指针的类型可以被表示为
+        \begin{center}
+        \begin{longtable}{l}
+            \texttt{指向的数据类型\hspace*{-0.25pt}*}
+        \end{longtable}
+        \end{center}
+
+        例如\texttt{int *p;}中\texttt{p}的类型为\texttt{int*}. 但是注意, 不可以把\texttt{int *p;}理解为\texttt{int* p;}, 星号在指针的声明中只表示它的后一个变量是指针.
+
+        我们习惯上用\texttt{NULL}表示一个指针不指向任何变量, \texttt{NULL}是标准库中的一个宏, 值为0.
+
     \section{指针的运算}
+        指针也可以进行加减法运算和比较运算, 前者表示地址的移动, 后者则表示比较两个指针储存地址的高低. 注意, 指针的加减并不是数值上加减, 而是以指针对应类型的长度为一个单位进行加减.
+
+        例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    int a;
+    int *p = &a;
+
+    printf("%p %p\n", p, p + 1);
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+        的输出相差了4, 而\texttt{int}占用的内存长度就是4\texttt{B}.
+
+        指针也可以和指针进行加减运算, 但这一般没有意义, 并且很容易导致错误, 我们\textbf{不推荐}这么做. 此外, 读者可以尝试运行如下例子:
+\begin{lstlisting}
+int main(){
+    int a;
+    int *p = &a;
+
+    p += 10000;
+
+    *p = 10;
+
+    return 0;
+}
+\end{lstlisting}
+
+        程序发生了段错误意外停止. 这是因为\texttt{a}的地址加10000, 是未分配给我们程序的内存, 可能没有程序在占用, 也可能别的应用甚至操作系统在占用. 如果我们尝试修改它的内容, 最好的结果是无事发生, 否则轻则在运行的应用崩溃, 重则操作系统崩溃, 很危险. 这样尝试访问非本程序所有的内存的指针称为野指针. 一般情况下, 我们\textbf{不推荐}对指针进行运算, 因为容易写出野指针.
+
     \section{数组与指针}
+        数组的本质是开辟了申请一段连续的内存, 例如\texttt{int arr[10];}将申请$4\times 10=40$\texttt{B}的内存. 与申请变量不同的是, 这段内存一定是连续的. 而数组的标识符其实是指向这段内存头部地址的指针. 因此下面的两种写法是等价的:
+        \begin{center}
+        \begin{longtable}{l}
+            \texttt{arr[i]} \\
+            \texttt{*(arr + i)}
+        \end{longtable}
+        \end{center}
+
+        想想这是为什么, 这也就将通了数组的使用的底层逻辑. 也就解释了为什么数组下标从0开始.也就讲通了为什么数组不能越界, 因为数组越界相当于访问野指针.
+
+        其实按逻辑推理, 下面两种写法也是等价的:
+        \begin{center}
+        \begin{longtable}{l}
+            \texttt{arr[5]}\\
+            \texttt{5[arr]}
+        \end{longtable}
+        \end{center}
+
+        而事实上它们也都能被正确编译和运行, 尽管我们\textbf{极不推荐}这么做, 但想想这是为什么.
+
     \section{二维指针}
-    \section{指针作为函数的参数}
+        此外, 因为指针本身也是一个变量, 只是它储存的值较特殊, 是一个地址, 但这个值本身也需要一个地址储存, 所以我们自然可以对一个指针取址, 那么自然也可以把地址赋值给另一个指针. 这个指向指针的指针就叫二维指针. 在声明二维指针时, 使用两个星号.
+
+        例如下面的例子:
+\begin{lstlisting}
+int main(){
+    int a;
+
+    int *p1 = &a;
+
+    int **p2 = &p1;
+
+    *p2; // = p1
+
+    **p2; // = *p1 = a
+
+    return 0;
+}
+\end{lstlisting}
+
+        此外, 二维数组是数组的数组, 而数组是一段内存头部的指针, 那么二维数组就是指针的指针, 所以二维数组本质就是二维指针.
+
+        所以下面两种写法是等价的:
+        \begin{center}
+        \begin{longtable}{l}
+            \texttt{arr[i][j]} \\
+            \texttt{*(*(arr + i) + j)}
+        \end{longtable}
+        \end{center}
+
+        所以二维数组只使用一个中括号时, 表示一个指针, 换言之下面两种写法是等价的:
+        \begin{center}
+        \begin{longtable}{l}
+            \texttt{arr[i]} \\
+            \texttt{*(arr + i)}
+        \end{longtable}
+        \end{center}
+
+        其中\texttt{arr}是二维指针, 故取一次值为一个一维指针.
+
+        同理可知高维指针的含义和使用, 此处略.
+
+    \section{指针作为函数的参数} % scanf, swap, 数组和字符串的传参
+        第\ref{函数的参数}节中我们提到形参和实参之间只传递值, 但并不是同一个变量了. 但用下面的方法就可以实现在函数内修改函数外的变量的值:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int swap(int *a, int *b){
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+
+    return 0;
+}
+
+int main(){
+    int x = 4, y = 3;
+
+    printf("%d %d\n", x, y);
+
+    swap(&x, &y);
+
+    printf("%d %d\n", x, y);
+
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+        输出为
+\lstset{
+    numbers=none,
+    keywordstyle=\color[RGB]{0,0,0},
+    commentstyle=\color[RGB]{0,0,0},
+    stringstyle=\color[RGB]{0,0,0}
+}
+\begin{lstlisting}
+4 3
+3 4
+\end{lstlisting}
+\lstset{
+    numbers=left,
+    keywordstyle=\color[RGB]{3,95,205},
+    commentstyle=\color[RGB]{34,139,34},
+    stringstyle=\color[RGB]{128,0,0}
+}
+
+        可见\texttt{x}和\texttt{y}确实交换了. 这是因为我们传入的并非\texttt{x}和\texttt{y}, 而是\texttt{x}和\texttt{y}的地址. 尽管按照函数传参的规则, 储存地址的变量, 也就是指针\texttt{a}和\texttt{\&x}, \texttt{b}和\texttt{\&y}并非同一个变量了, 但是我们并不需要它们相同, 我们只需要得到\texttt{x}和\texttt{y}的地址, 它们的地址在一次运行期间是不会变的, \texttt{swap()}内部直接用地址访问\texttt{x}和\texttt{y}, 那么访问的自然就是两个变量本身了, 于是可以实现交换.
+
+        这也解释了为什么代码\ref{c_func_bubble_1}中能够修改实参\texttt{arr}的值, 因为我们传入的是数组, 而数组是指针, 所以在内部调用\texttt{arr[i]}时, 其实是在已知地址求值, 于是求得的结果和实参是同一个变量, 在代码内部可以直接修改.
+
+        除此之外, 这也解释了\texttt{scanf()}中要改变的变量需要用\texttt{\&}修饰, 是为了传入它们的地址, 使得函数内部能够修改它们的值. 也解释了为什么在输入字符串时不需要用取址运算符, 因为字符串本质是数组, 数组本质是指针, 所以传入字符串的标识符, 就已经足以修改其值了. 将在第\ref{字符串}章中详细讲解.
+   
     \section{\texttt{*}函数指针\texttt{*}}
-    \section{\texttt{*}主函数的形参\texttt{*}}
+        函数的标识符其实也是一个指针, 我们也可以把它作为参数传入函数中. 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int callfunc(int (*func)()){
+    (*func)();
+    return 0;
+}
+
+int func1(){
+    printf("A sail!\n");
+    return 0;
+}
+
+int func2(){
+    printf("A veil awave upon the waves.\n");
+    return 0;
+}
+
+int main(){
+    int x = 4, y = 3;
+
+    callfunc(func1);
+
+    callfunc(func2);
+
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+
+        函数指针常见的应用例如优化代码\ref{c_func_bubble_3}, 使之能适应更多变的需求:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+#define N 5
+
+int arr[N] = {3, 5, 1, 7, 6};
+
+int print();
+int comp_default(int a, int b);
+int bubble_sort(int arr[], int len, int (*comp)(int a, int b));
+
+int main(){
+
+    print();
+
+    bubble_sort(arr, N, comp_default);
+
+    print();
+
+    system("pause");
+
+    return 0;
+}
+
+int print(){
+    for(int i = 0; i < N; i++){
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+    return 0;
+}
+
+int comp_default(int a, int b){
+    if(a < b){
+        return 1;
+    }else{
+        return 0;
+    }
+}
+
+int bubble_sort(int arr[], int len, int (*comp)(int a, int b)){
+    if(len < 0){
+        return -1;
+    }
+
+    while(1){
+        int flag = 1;
+
+        for(int i = 0; i < len - 1; i++){
+            if(!comp(arr[i], arr[i + 1])){
+                int temp = arr[i];
+                arr[i] = arr[i + 1];
+                arr[i + 1] = temp;
+                flag = 0;
+            }
+        }
+
+        if(flag == 1){
+            break;
+        }
+    }
+
+    return 0;
+}
+\end{lstlisting}
+        其中利用了C语言提供的语法糖, 当函数指针作为形参时, 函数内部可以不对其取值, 默认表示其取值结果.  \texttt{bubble\_sort()}第3个参数传入一个函数指针, 这个函数的含义是对于一对相邻数据, 当有序时, 返回真, 否则返回假.
+
+        当我们传入\texttt{comp\_default}时, 就表示从小到到排序; 例如我们如果想实现从大到小排序, 只需要编写:
+\begin{lstlisting}
+int comp_reverse(int a, int b){
+    if(a > b){
+        return 1;
+    }else{
+        return 0;
+    }
+}
+\end{lstlisting}
+
+        并作为\texttt{bubble\_sort()}的第3个参数传入即可.
+
     \section{\texttt{*}申请内存和内存泄漏\texttt{*}} \label{申请内存和内存泄漏}
+        如果我们执行:
+\begin{lstlisting}
+int main(){
+    int *p;
+    *p = 10;
+
+    return 0;
+}
+\end{lstlisting}
+
+        就会发生段错误, 这是因为\texttt{p}尚未被分配指向的内存, 系统会随机为它分配一个值, 于是相当于访问野指针. 我们可以使用\texttt{malloc()}和\texttt{free()}显式地为指针申请内存.
+
+        \texttt{malloc()}的原型为\texttt{void *malloc(int size)}. 它会申请一段大小为\texttt{size}字节的内存, 并返回这段内存的头部地址. 在使用完毕后, 我们需要用\texttt{free()}显式将其释放. 例如下面的例子:
+\begin{lstlisting}
+#include <stdlib.h>
+
+int main(){
+    int *p = (int*)malloc(sizeof(int));
+    *p = 10;
+    free(p);
+
+    return 0;
+}
+\end{lstlisting}
+
+        其中\texttt{sizeof()}的用法见第\ref{sizeof}节.
+
+        我们可以利用这种方法模拟数组. 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    int *p = (int*)malloc(10 * sizeof(int));
+
+    for(int i = 0; i < 10; i++){
+        p[i] = i + 1;
+    }
+
+    for(int i = 0; i < 10; i++){
+        printf("%d ", p[i]);
+    }
+
+    printf("\n");
+    system("pause");
+
+    free(p);
+
+    return 0;
+}
+\end{lstlisting}
+
+        想想这是为什么.
+
+        除此之外, 我们也能模拟多维数组, 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+#define N 3
+#define M 2
+
+int main(){
+    int **p = (int**)malloc(N * sizeof(int*));
+    for(int i = 0; i < N; i++){
+        p[i] = (int*)malloc(M * sizeof(int));
+    }
+
+    for(int i = 0; i < N * M; i++){
+        p[i / M][i % M] = i;
+    }
+
+    for(int i = 0; i < N; i++){
+        for(int j = 0; j < M; j++){
+            printf("%d ", p[i][j]);
+        }
+        printf("\n");
+    }
+
+    system("pause");
+
+    for(int i = 0; i < N; i++){
+        free(p[i]);
+    }
+    free(p);
+
+    return 0;
+}
+\end{lstlisting}
+
+        想想这是为什么, 有什么好处, 又有什么别的用法.
+
+        需要注意, \texttt{malloc()}和\texttt{free()}总是需要配套出现, 否则操作系统不会自动释放程序员显式申请的内存, 会导致内存泄漏. 例如下面的例子:
+\begin{lstlisting}
+#include <stdlib.h>
+
+int main(){
+    while(1){
+        malloc(1);
+    }
+    return 0;
+}
+\end{lstlisting}
+        运行一段时间后将会发生段错误, 因为不断申请内存, 最后超过限度. 但是内存泄漏往往不这么显眼, 而是非常隐蔽地藏在某个循环或分支中, 申请不可回收的内存也不这么迅速, 而是会在数小时到数天之内逐渐占满内存. 这种情况很难DEBUG, 所以我们\textbf{建议}在编写\texttt{malloc()}时, 就立即将\texttt{free()}写好, 正如写好前大括号就立即写后大括号那样.
