@@ -590,6 +590,8 @@ int main(){
         \end{center}
         表示函数结束.
 
+        我们\textbf{建议}, 当函数不需要返回任何东西时, 把函数返回类型设置为\texttt{int}而非\texttt{void}, 并在函数正常运行之后返回0. 主函数也是这么做的, 在主函数结束处返回0是告诉操作系统, 我们的程序正常运行了.
+
         此外, 我们也可以在函数运行中使用\texttt{return}语句, 来中途停止函数运行, \texttt{return}语句后的所有内容将不再被执行. 例如下面的例子:
 \begin{lstlisting}
 #include <stdio.h>
@@ -646,6 +648,15 @@ int bubble_sort(int arr[], int len){
 \end{lstlisting}
 
         若数组长度小于零, 直接返回-1表示不合法的输入, 并不再运行后续代码.
+
+        如此这般, 我们就可以在调用函数时知晓函数是否正常运行了, 形如:
+\begin{lstlisting}
+if(bubble_sort(arr, len) == -1){
+    // 发生错误, 处理.
+}
+\end{lstlisting}
+
+        注意, 排序算法虽然被写在表达式中, 但是它仍然会运行, 并把\texttt{arr}排序. 这就是所谓``编程语言中的函数和数学中的函数不同''.
 
         我们\textbf{建议}总是在函数开头判断异常情况.
 
