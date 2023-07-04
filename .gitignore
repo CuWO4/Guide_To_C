@@ -5,6 +5,4 @@
 *.synctex*
 
 /testcode
-/.vscode
-/Tmp
 /.VSCodeCounter
