@@ -20,6 +20,11 @@
 \usepackage{booktabs}
 \usepackage{wallpaper}
 
+\usepackage{zhnumber}
+\renewcommand{\thechapter}{\zhnum{chapter}}
+\renewcommand{\thesection}{\arabic{chapter}.\arabic{section}}
+\renewcommand{\thesubsection}{\arabic{chapter}.\arabic{section}.\arabic{subsection}}
+
 \usepackage{amsmath}
 \allowdisplaybreaks
 
@@ -49,8 +54,16 @@
 \onehalfspacing
 \addtolength{\parskip}{1em}
 
-\usepackage{titlesec}   % 这段代码能够修改前言, 说明和后记的章节标题样式, 原理未知, 为什么不修改正文章节标题未知.
-\makeatletter
+\usepackage{titlesec}
+
+\titleformat{\chapter}[display]
+{\filcenter\heiti\bfseries\fontsize{60pt}{72pt}\selectfont}
+{\fontsize{45pt}{54pt}\selectfont 第\thechapter 章}
+{0pt}
+{\thispagestyle{empty} \ThisCenterWallPaper{1}{pic/chapter_title_background.png} \pagecolor{white}}
+[\newpage] % creates the new page
+
+\makeatletter % 这段代码能够修改前言, 说明和后记的章节标题样式, 原理未知, 为什么不修改正文章节标题未知.
 \renewcommand{\@makeschapterhead}[1]{%
   \vspace*{20\p@}%
   {\parindent \z@
@@ -61,7 +74,7 @@
   }}
 \makeatother
 
-\ctexset{
+\ctexset{ % bug: 会产生字体错误, 但不影响结果.
     chapter={
         name={第,章},
         format+=\heiti
