@@ -1,10 +1,139 @@
 \chapter{附加信息} \label{附加信息}
 
-    \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=0.9\linewidth]{pic/ascii.jpg}
-        \caption{ASCII字符集对应表} \label{ASCII字符集对应表}
-    \end{figure}
+`        \begin{longtable}{|c|c|c|c|c|c|}
+            \hline \rule{0pt}{15pt}
+            字符编码 & 符号 & 解释 & 字符编码 & 符号 & 解释 \\
+            \hline \hline \rule{0pt}{15pt}
+            0    & \texttt{NUL}       & 空字符           	& 1    & \texttt{SOH}       & 标题开始        	\\
+            \hline \rule{0pt}{15pt}
+            2    & \texttt{STX}       & 正文开始        	& 3    & \texttt{ETX}       & 正文结束        	\\
+            \hline \rule{0pt}{15pt}
+            4    & \texttt{EOT}       & 传输结束        	& 5    & \texttt{ENQ}       & 询问              	\\
+            \hline \rule{0pt}{15pt}
+            6    & \texttt{ACK}       & 收到通知        	& 7    & \texttt{BEL}       & 铃                 	\\
+            \hline \rule{0pt}{15pt}
+            8    & \texttt{BS}        & 退格              	& 9    & \texttt{HT}        & 水平制表符     	\\
+            \hline \rule{0pt}{15pt}
+            10   & \texttt{LF}        & 换行符 \texttt{\sla n}         	& 11   & \texttt{VT}        & 垂直制表符     	\\
+            \hline \rule{0pt}{15pt}
+            12   & \texttt{FF}        & 换页符           	& 13   & \texttt{CR}        & 回车符 \texttt{\sla r}         	\\
+            \hline \rule{0pt}{15pt}
+            14   & \texttt{SO}        & 移出              	& 15   & \texttt{SI}        & 移入              	\\
+            \hline \rule{0pt}{15pt}sub
+            16   & \texttt{DLE}       & 数据链路转义  	& 17   & \texttt{DC1}       & 设备控制1       	\\
+            \hline \rule{0pt}{15pt}
+            18   & \texttt{DC2}       & 设备控制2       	& 19   & \texttt{DC3}       & 设备控制3       	\\
+            \hline \rule{0pt}{15pt}
+            20   & \texttt{DC4}       & 设备控制4       	& 21   & \texttt{NAK}       & 拒绝接收        	\\
+            \hline \rule{0pt}{15pt}
+            22   & \texttt{SYN}       & 同步空闲        	& 23   & \texttt{ETB}       & 传输块结束     	\\
+            \hline \rule{0pt}{15pt}
+            24   & \texttt{CAN}       & 取消              	& 25   & \texttt{EM}        & 介质中断        	\\
+            \hline \rule{0pt}{15pt}
+            26   & \texttt{SUB}       & 替换              	& 27   & \texttt{ESC}       & 换码符           	\\
+            \hline \rule{0pt}{15pt}
+            28   & \texttt{FS}        & 文件分隔符     	& 29   & \texttt{GS}        & 组分隔符        	\\
+            \hline \rule{0pt}{15pt}
+            30   & \texttt{RS}        & 记录分离符     	& 31   & \texttt{US}        & 单元分隔符     	\\
+            \hline \rule{0pt}{15pt}
+            32   &          & 空格              	& 33   & \texttt{!}         & 感叹号           	\\
+            \hline \rule{0pt}{15pt}
+            34   & \texttt{"}         & 双引号           	& 35   & \texttt{\#}         & 井号              	\\
+            \hline \rule{0pt}{15pt}
+            36   & \texttt{\$}         & 美元符           	& 37   & \texttt{\%}         & 百分号           	\\
+            \hline \rule{0pt}{15pt}
+            38   & \texttt{\&}         & 与                 	& 39   & \texttt{'}         & 单引号           	\\
+            \hline \rule{0pt}{15pt}
+            40   & \texttt{(}         & 左括号           	& 41   & \texttt{)}         & 右括号           	\\
+            \hline \rule{0pt}{15pt}
+            42   & \texttt{*}         & 星号              	& 43   & \texttt{+}         & 加号              	\\
+            \hline \rule{0pt}{15pt}
+            44   & \texttt{,}         & 逗号              	& 45   & \texttt{-}         & 连字号或减号  	\\
+            \hline \rule{0pt}{15pt}
+            46   & \texttt{.}         & 句点或小数点  	& 47   & \texttt{/}         & 斜杠              	\\
+            \hline \rule{0pt}{15pt}
+            48   & \texttt{0}         & 0                   	& 49   & \texttt{1}         & 1                   	\\
+            \hline \rule{0pt}{15pt}
+            50   & \texttt{2}         & 2                   	& 51   & \texttt{3}         & 3                   	\\
+            \hline \rule{0pt}{15pt}
+            52   & \texttt{4}         & 4                   	& 53   & \texttt{5}         & 5                   	\\
+            \hline \rule{0pt}{15pt}
+            54   & \texttt{6}         & 6                   	& 55   & \texttt{7}         & 7                   	\\
+            \hline \rule{0pt}{15pt}
+            56   & \texttt{8}         & 8                   	& 57   & \texttt{9}         & 9                   	\\
+            \hline \rule{0pt}{15pt}
+            58   & \texttt{:}         & 冒号              	& 59   & \texttt{;}         & 分号              	\\
+            \hline \rule{0pt}{15pt}
+            60   & \texttt{<}         & 小于              	& 61   & \texttt{=}         & 等号              	\\
+            \hline \rule{0pt}{15pt}
+            62   & \texttt{>}         & 大于              	& 63   & \texttt{?}         & 问号              	\\
+            \hline \rule{0pt}{15pt}
+            64   & \texttt{@}         & 电子邮件符号  	& 65   & \texttt{A}         & 大写字母A       	\\
+            \hline \rule{0pt}{15pt}
+            66   & \texttt{B}         & 大写字母B       	& 67   & \texttt{C}         & 大写字母C       	\\
+            \hline \rule{0pt}{15pt}
+            68   & \texttt{D}         & 大写字母D       	& 69   & \texttt{E}         & 大写字母E       	\\
+            \hline \rule{0pt}{15pt}
+            70   & \texttt{F}         & 大写字母F       	& 71   & 	\texttt{G}         & 大写字母G       	\\
+            \hline \rule{0pt}{15pt}
+            72   & 	\texttt{H}         & 大写字母H       	& 73   & 	\texttt{I}         & 大写字母I       	\\
+            \hline \rule{0pt}{15pt}
+            74   & 	\texttt{J}         & 大写字母J       	& 75   & 	\texttt{K}         & 大写字母K       	\\
+            \hline \rule{0pt}{15pt}
+            76   &  \texttt{L}         & 大写字母L       	& 77   & 	\texttt{M}         & 大写字母M       	\\
+            \hline \rule{0pt}{15pt}
+            78   & 	\texttt{N}         & 大写字母N       	& 79   & 	\texttt{O}         & 大写字母O       	\\
+            \hline \rule{0pt}{15pt}
+            80   & 	\texttt{P}         & 大写字母P       	& 81   & 	\texttt{Q}         & 大写字母Q       	\\
+            \hline \rule{0pt}{15pt}
+            82   & 	\texttt{R}         & 大写字母R       	& 83   & 	\texttt{S}         & 大写字母S       	\\
+            \hline \rule{0pt}{15pt}
+            84   & 	\texttt{T}         & 大写字母T       	& 85   & 	\texttt{U}         & 大写字母U       	\\
+            \hline \rule{0pt}{15pt}
+            86   & 	\texttt{V}         & 大写字母V       	& 87   & 	\texttt{W}         & 大写字母W       	\\
+            \hline \rule{0pt}{15pt}
+            88   & 	\texttt{X}         & 大写字母X       	& 89   & 	\texttt{Y}         & 大写字母Y       	\\
+            \hline \rule{0pt}{15pt}
+            90   & 	\texttt{Z}         & 大写字母Z       	& 91   & \texttt{[}         & 左中括号        	\\
+            \hline \rule{0pt}{15pt}
+            92   & \sla         & 反斜杠           	& 93   & \texttt{]}         & 右中括号        	\\
+            \hline \rule{0pt}{15pt}
+            94   & \texttt{\^{}}         & 音调符号        	& 95   & \texttt{\_}         & 下划线           	\\
+            \hline \rule{0pt}{15pt}
+            96   & \texttt{`}         & 重音符           	& 97   & 	\texttt{a}         & 小写字母a       	\\
+            \hline \rule{0pt}{15pt}
+            98   & 	\texttt{b}         & 小写字母b       	& 99   & 	\texttt{c}         & 小写字母c       	\\
+            \hline \rule{0pt}{15pt}
+            100  & 	\texttt{d}         & 小写字母d       	& 101  & 	\texttt{e}         & 小写字母e       	\\
+            \hline \rule{0pt}{15pt}
+            102  & 	\texttt{f}         & 小写字母f       	& 103  & 	\texttt{g}         & 小写字母g       	\\
+            \hline \rule{0pt}{15pt}
+            104  & 	\texttt{h}         & 小写字母h       	& 105  & 	\texttt{i}         & 小写字母i       	\\
+            \hline \rule{0pt}{15pt}
+            106  & 	\texttt{j}         & 小写字母j       	& 107  & 	\texttt{k}         & 小写字母k       	\\
+            \hline \rule{0pt}{15pt}
+            108  & 	\texttt{l}         & 小写字母l       	& 109  & 	\texttt{m}         & 小写字母m       	\\
+            \hline \rule{0pt}{15pt}
+            110  & 	\texttt{n}         & 小写字母n       	& 111  & 	\texttt{o}         & 小写字母o       	\\
+            \hline \rule{0pt}{15pt}
+            112  & 	\texttt{p}         & 小写字母p       	& 113  & 	\texttt{q}         & 小写字母q       	\\
+            \hline \rule{0pt}{15pt}
+            114  & 	\texttt{r}         & 小写字母r       	& 115  & 	\texttt{s}         & 小写字母s       	\\
+            \hline \rule{0pt}{15pt}
+            116  & 	\texttt{t}         & 小写字母t       	& 117  & 	\texttt{u}         & 小写字母u       	\\
+            \hline \rule{0pt}{15pt}
+            118  & 	\texttt{v}         & 小写字母v       	& 119  & 	\texttt{w}         & 小写字母w       	\\
+            \hline \rule{0pt}{15pt}
+            120  & 	\texttt{x}         & 小写字母x       	& 121  & 	\texttt{y}         & 小写字母y       	\\
+            \hline \rule{0pt}{15pt}
+            122  & 	\texttt{z}         & 小写字母z       	& 123  & \texttt{\{}         & 左大括号        	\\
+            \hline \rule{0pt}{15pt}
+            124  & \texttt{|}         & 垂直线           	& 125  & \texttt{\}}         & 右大括号        	\\
+            \hline \rule{0pt}{15pt}
+            126  & \texttt{\~{}}         & 波浪号           	& 127  &           & 删除           	\\
+            \hline
+            \caption{ASCII字符集对照表} \label{ASCII字符集对照表}
+        \end{longtable}
 
     \begin{table}[htbp]
         \centering
@@ -14,17 +143,17 @@
                 \hline
                 ~数据类型~    & ~占用内存(B)~   \\
                 \hline \hline
-                int         & 4             \\
+                \texttt{int}         & 4             \\
                 \hline
-                short       & 2             \\
+                \texttt{short}       & 2             \\
                 \hline
-                long        & 4 或 8\tnote{1} \\
+                \texttt{long}        & 4 或 8\tnote{1} \\
                 \hline
-                char        & 1             \\
+                \texttt{char}        & 1             \\
                 \hline
-                float       & 4             \\
+                \texttt{float}       & 4             \\
                 \hline
-                double      & 8             \\
+                \texttt{double}      & 8             \\
                 \hline
             \end{tabular} 
             \begin{tablenotes}
