@@ -1,0 +1,232 @@
+\chapter{结构体} \label{结构体}
+    结构体是一种程序员自己定义的数据类型, 一个结构体变量中储存着若干个变量. 一个结构体的定义形如
+    \begin{center}
+    \begin{longtable}{l}
+        \texttt{struct 结构体名\{} \\
+        \qquad \texttt{内部变量声明} \\
+        \texttt{\};}
+    \end{longtable}
+    \end{center}
+
+    注意定义的大括号后面需要一个分号.
+
+    当我们定义了一个结构体后, 就可以声明类型为这种结构体的变量, 语法形如
+    \begin{center}
+    \begin{longtable}{l}
+        \texttt{struct 结构体名~变量名;}
+    \end{longtable}
+    \end{center}
+
+    我们也可以在定义结构体时, 声明结构体变量, 语法形如
+    \begin{center}
+    \begin{longtable}{l}
+        \texttt{struct 结构体名\{} \\
+        \qquad \texttt{变量声明} \\
+        \texttt{\}结构体变量名;}
+    \end{longtable}
+    \end{center}
+
+    当我们声明了结构体变量后, 就可以用点运算符\texttt{.}来访问其中的变量, 语法形如
+    \begin{center}
+    \begin{longtable}{l}
+        \texttt{结构体变量名.内部变量名}
+    \end{longtable}
+    \end{center}
+
+    例如下面的例子:
+\begin{lstlisting}
+struct STU{
+    int a;
+    double b;
+}x;
+
+int main(){
+    struct STU y;
+    
+    x.a = 1;
+    x.b = 2.5;
+
+    y.a = 0;
+    y.b = 1.3;
+
+    return 0;
+}
+\end{lstlisting}
+    定义了一种结构体\texttt{STU}, 它的内部包含了整型的\texttt{a}和浮点型的\texttt{b}两个变量. 然后声明了两个类型为\text{STU}的变量\texttt{x}和\texttt{y}, 接着分别把其内部的\texttt{a}和\texttt{b}赋值为了1, 0和2.5, 1.3.
+
+    结构体可以互相赋值, 例如下面的例子:
+\begin{lstlisting}
+struct STU{
+    int a;
+    double b;
+};
+
+int main(){
+    struct STU x, y;
+
+    x.a = 1;
+    x.b = 2.5;
+
+    y.a = 0;
+    y.b = 1.3;
+    
+    struct STU temp = x;
+    x = y;
+    y = temp;
+
+    return 0;
+}
+\end{lstlisting}
+    就交换了\texttt{x}和\texttt{y}.
+
+    我们也可以像基本的数据类型那样, 定义结构体数组和结构体指针, 它们的用法和基本数据类型的数组和指针相同, 在此不再赘述. 特别地若A为一个结构体指针, 那么
+    \texttt{(*A).x}可以简写为\texttt{A->x}.
+
+    结构体相当于把若干变量捆绑在一起, 当发生赋值等操作时, 这些变量会被一起赋值. 这在处理同一个对象的不同属性时很有用, 例如我们可以定义一个结构体\texttt{STUDENT}, 它包含学生姓名和学生成绩, 然后根据学生成绩对学生进行排序, 那么学生姓名也会随之一起被排序. 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+#define N 3
+
+struct STUDENT{
+    int score;
+    char *name;
+}class_L9[N];
+
+int init();
+int print(struct STUDENT arr[], int len);
+int swap(struct STUDENT *a, struct STUDENT *b);
+int bubble_sort(struct STUDENT arr[], int len);
+
+int main(){
+    init();
+
+    print(class_L9, N);
+    printf("\n");
+
+    bubble_sort(class_L9, N);
+
+    print(class_L9, N);
+
+    system("pause");
+
+    return 0;
+}
+
+int init(){
+    class_L9[0].score = 71;
+    class_L9[0].name = "Andy";
+
+    class_L9[1].score = 63;
+    class_L9[1].name = "Bob";
+
+    class_L9[2].score = 93;
+    class_L9[2].name = "Carol";
+
+    return 0;
+}
+
+int print(struct STUDENT arr[], int len){
+    for(int i = 0; i < 3; i++){
+        printf("%s: %d\n", arr[i].name, arr[i].score);
+    }
+    return 0;
+}
+
+int swap(struct STUDENT *a, struct STUDENT *b){
+    struct STUDENT temp = *a;
+    *a = *b;
+    *b = temp;
+    return 0;
+}
+
+int bubble_sort(struct STUDENT arr[], int len){
+    if(len < 0){
+        return -1;
+    }
+
+    while(1){
+        int flag = 1;
+        for(int i = 0; i < len - 1; i++){
+            if(arr[i].score > arr[i + 1].score){
+                swap(&arr[i], &arr[i + 1]);
+                flag = 0;
+            }
+        }
+        if(flag == 1){
+            break;
+        }
+    }
+    return 0;
+}
+\end{lstlisting}
+    输出为
+\lstset{
+    numbers=none,
+    keywordstyle=\color[RGB]{0,0,0},
+    commentstyle=\color[RGB]{0,0,0},
+    stringstyle=\color[RGB]{0,0,0}
+}
+\begin{lstlisting}
+Andy: 71
+Bob: 63
+Carol: 93
+
+Bob: 63
+Andy: 71
+Carol: 93
+\end{lstlisting}
+\lstset{
+    numbers=left,
+    keywordstyle=\color[RGB]{3,95,205},
+    commentstyle=\color[RGB]{34,139,34},
+    stringstyle=\color[RGB]{128,0,0}
+}
+
+    可见, 我们在\texttt{bubble\_sort()}中只对成绩进行了排序, 在结果中学生名字也随着成绩一同进行了排序.
+
+    \begin{mdframed}[linecolor=gray]
+
+    此外, 利用函数指针, 我们可以编写泛用性更广的排序. 例如下面的例子:
+\begin{lstlisting}
+int bubble_sort(struct STUDENT arr[], int len, int (*comp)(struct STUDENT a, struct STUDENT b)){
+    if(len < 0){
+        return -1;
+    }
+
+    while(1){
+        int flag = 1;
+        for(int i = 0; i < len - 1; i++){
+            if(!comp(arr[i], arr[i + 1])){
+                swap(&arr[i], &arr[i + 1]);
+                flag = 0;
+            }
+        }
+        if(flag == 1){
+            break;
+        }
+    }
+    return 0;
+}
+\end{lstlisting}
+
+    其中, 形参\texttt{comp()}指定排序方法. 它的规则是, 对于一对相邻数据, 当有序时, 它返回真, 否则返回假.
+
+    如果我们现在想实现按照首字母顺序排序, 那么我们只需要编写\texttt{comp2()}函数如下(默认首字母大写):
+\begin{lstlisting}
+    int comp2(struct STUDENT a, struct STUDENT b){
+        if(a.name[0] < b.name[0]){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+\end{lstlisting}
+    并在调用\texttt{bubble\_sort()}时使用:
+\begin{lstlisting}
+bubble_sort(class_L9, N, comp2);
+\end{lstlisting}
+    即可.   
+
+    \end{mdframed}

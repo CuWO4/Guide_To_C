@@ -1,0 +1,301 @@
+\chapter{其他内容补充} \label{其他内容补充}
+    \section{\texttt{sizeof()}} \label{sizeof}
+        \texttt{sizeof()}可以看作一种特殊的单目运算符, 它会返回小括号中对象占用的内存大小(单位: B). 特别地, 它可以作用于数据类型等对象. 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+struct test1{
+    int a;
+    double b;
+};
+
+int main(){
+
+    int a = 0;
+    int arr1[10] = { 0 };
+    int *arr2 = (int*)malloc(10*sizeof(int));
+
+    printf(
+        "%d\n"
+        "%d\n"
+        "%d\n"
+        "%d\n"
+        "%d\n",
+        sizeof(int),
+        sizeof(struct test1),
+        sizeof(a),
+        sizeof(arr1),
+        sizeof(arr2)
+    );
+
+    system("pause");
+
+    free(arr2);
+
+    return 0;
+}
+\end{lstlisting}
+
+        输出为
+\lstset{
+    numbers=none,
+    keywordstyle=\color[RGB]{0,0,0},
+    commentstyle=\color[RGB]{0,0,0},
+    stringstyle=\color[RGB]{0,0,0}
+}
+\begin{lstlisting}
+4
+16
+4
+40
+8
+\end{lstlisting}
+\lstset{
+    numbers=left,
+    keywordstyle=\color[RGB]{3,95,205},
+    commentstyle=\color[RGB]{34,139,34},
+    stringstyle=\color[RGB]{128,0,0}
+}
+
+        前两个输出说明\texttt{sizeof()}可以返回数据类型的内存占用, 其中结构体\texttt{test1}占用的内存并非$4 + 8 = 12$B 与内存对齐有关. 后三个输出说明\texttt{sizeof()}可以返回变量的内存占用, 但需要注意的是, 我们把指针当数组用时, \texttt{sizeof()}仍然视其为指针, 并会返回指针的内存占用.
+
+    \section{\texttt{typedef}}
+        typedef的语法形如
+        \begin{center}
+        \begin{longtable}{l}
+            \texttt{typedef 旧类型名~新类型名;}
+        \end{longtable}
+        \end{center}
+        
+        这将把\texttt{新类型名}视作\texttt{旧类型名}的别名. 例如下面的例子:
+\begin{lstlisting}
+typedef int INTEGER;
+
+INTEGER main(){
+    INTEGER a = 0;
+
+    return 0;
+}
+\end{lstlisting}
+        等价于
+\begin{lstlisting}
+int main(){
+    int a = 0;
+
+    return 0;
+}
+\end{lstlisting}
+
+        我们也可以为数组起别名:
+\begin{lstlisting}
+typedef char CHAR_20[20];
+
+int main(){
+    CHAR_20 a = { 0 }, b = { 0 };
+
+    return 0;
+}
+\end{lstlisting}
+        等价于
+\begin{lstlisting}
+int main(){
+    char a[20] = { 0 }, b[20] = { 0 };
+
+    return 0;
+}
+\end{lstlisting}
+
+        我们也可以为指针起别名:
+\begin{lstlisting}
+typedef int *PTR_INT;
+
+int main(){
+    PTR_INT p1, p2;
+
+    return 0;
+}
+\end{lstlisting}
+        等价于
+\begin{lstlisting}
+int main(){
+    int *p1, *p2;
+
+    return 0;
+}
+\end{lstlisting}
+
+        我们也可以为结构体起别名:
+\begin{lstlisting}
+typedef struct test{
+    int a;
+    double b;
+} TEST;
+
+int main(){
+    TEST stu;
+
+    return 0;
+}
+\end{lstlisting}
+        等价于
+\begin{lstlisting}
+struct test{
+    int a;
+    double b;
+};
+
+int main(){
+    struct test stu;
+
+    return 0;
+}
+\end{lstlisting}
+
+        需要注意的是, 我们使用\texttt{typedef}定义新类型后, 就不能在使用时再在新类型前加上别的修饰词了. 例如下面的例子:
+\begin{lstlisting}
+typedef int INTEGER;
+
+int main(){
+    unsigned INTEGER a = 0;
+
+    return 0;
+}
+\end{lstlisting}
+        会报错. 这和使用\texttt{\#define}定义新类型是不同的.
+
+        \texttt{typedef}的意义在于有时我们需要一种特殊的代码内部信息交换格式, 例如接口\texttt{Interface}, 它的值表示调用第几接口, 然而本质上它不过是一个整型变量. 如果我们在需要接口的地方都使用\texttt{int}, 未免容易引起混淆; 但若使用\texttt{typedef int Interface;}, 那么接口变量的语义就显然了. 用一个稍粗糙的比喻来说明, 就是``同样是一块毛巾, \texttt{typedef}告诉我们这块毛巾用来擦脸, 还是用来擦脚.''
+
+    \section{随机数}
+        标准库\texttt{stdlib.h}中包括了一个随机数生成模块. 其中, 我们使用\texttt{srand(unsigned)}设置随机数种子, 使用\texttt{rand()}生成一个随机数. 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    srand(0); // 设置随机数种子为0
+
+    for(int i = 0; i < 5; i++){
+        printf("%d\n", rand());
+    }
+
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+        将输出
+\lstset{
+    numbers=none,
+    keywordstyle=\color[RGB]{0,0,0},
+    commentstyle=\color[RGB]{0,0,0},
+    stringstyle=\color[RGB]{0,0,0}
+}
+\begin{lstlisting}
+38
+7719
+21238
+2437
+8855
+\end{lstlisting}
+\lstset{
+    numbers=left,
+    keywordstyle=\color[RGB]{3,95,205},
+    commentstyle=\color[RGB]{34,139,34},
+    stringstyle=\color[RGB]{128,0,0}
+}
+
+        但读者可以多运行几次, 会发现输出始终为这5个数. 这是因为计算机生成的随机数是伪随机数. 它其实是根据种子确定的, 分布几乎没有规律的, 周期很大的一个周期函数. 由于它的周期很大, 并且在不知道种子和随机算法的情况下, 很难根据过往数据推知下一个随机, 所以我们可以近似认为它是随机的.
+
+        我们可以利用标准库\texttt{time.h}中的\texttt{time(*time\_t)}函数, 它会返回和运行时间有关的一个值, 这样就可以使得程序每次运行, 生成的随机数序列各不相同. 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main(){
+    srand((unsigned)time(NULL));
+
+    for(int i = 0; i < 5; i++){
+        printf("%d\n", rand());
+    }
+
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+
+        但短时间内大量运行还是会导致随机序列相近. 另一种设置种子的方法是申请一字节内存, 以内存地址作为随机数种子. 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    void *p = malloc(1);
+    srand((unsigned)p);
+    free(p);
+
+    for(int i = 0; i < 5; i++){
+        printf("%d\n", rand());
+    }
+
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+
+        这种方法随机性大大增强了.
+
+    \section{\texttt{const}} 
+        在声明变量时, 我们可以用\texttt{const}修饰, 表示这个变量可以等同于常量, 它是只读的, 不能通过赋值或其它手段修改它的值. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    const double SQRT_5 = 2.23607;
+
+    SQRT_5 = 2.0; // 错误.
+
+    return 0;
+}
+\end{lstlisting}
+
+        这有助于防止一些不改被修改的变量被修改. 当这种错误发生时, 编译时即会发生错误, 更容易DEBUG, 而不至于把错误拖到运行时, 增加DEBUG时间.
+
+        \texttt{const}也可以修饰函数的形参, 来告知函数的调用者, 实参在函数运行期间不会被修改. 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int func(const int arr[]){
+
+    return 0;
+}
+
+int main(){
+
+    return 0;
+}
+\end{lstlisting}
+
+        当\texttt{const}修饰指针时, 有两种情况.
+
+        \begin{description}
+            \item[\texttt{const int *p}] 表示\texttt{p}指向的数据是常量, \texttt{*p}不能修改; 但\texttt{p}本身的值, 即指向谁是可修改的. 此时称\texttt{p}为常量指针.
+            \item[\texttt{int *const p}] 表示\texttt{p}本身是常量, \texttt{p}不能修改, 即指向谁不能修改; 但\texttt{*p}可以修改. 此时称\texttt{p}为指针常量.
+        \end{description}
+
+        此外, 形如\texttt{const int *const p;}表示\texttt{p}本身指向谁不可修改, 同时\texttt{p}指向的数据不可修改.
+
+        但需要注意的是, 下面的代码是允许的:
+\begin{lstlisting}
+int main(){
+    int a = 0;
+    const int *p = &a;
+    a = 10;
+
+    return 0;
+}
+\end{lstlisting}
+
+        也就是说常量指针指向的数据, 不一定是常量.

@@ -1,0 +1,97 @@
+\chapter{字符串} \label{字符串}
+    \section{字符串, 数组与指针}
+        其实读者应该已经看出, 字符串是字符类型的数组, 字符串的标识符是指向这个数组地址头部的指针. 所以和数组以及指针有关的操作都可以应用在字符串上. 但是字符串有两个特殊的地方:
+
+        \subsection*{字符串常量}
+            字符串常量用双引号包裹, 值为这段字符串的头部地址指针. 它可以用在字符串的初始化中, 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    char *str1 = "May the force be with you.";
+    char str2[] = "So uncivilized.";
+
+    return 0;
+}
+\end{lstlisting}
+
+            但字符串一旦初始化, 再把字符串变量赋值给数组型字符串就是错误的, 我们只能适用下标访问的方式修改字符串了. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    char str[] = "May the force be with you.";
+
+    str = "ABC"; // 错误.
+
+    str[0] = 'A';
+    str[1] = 'B';
+    str[2] = 'C';
+
+    return 0;
+}
+\end{lstlisting}
+
+            \begin{mdframed}[linecolor=darkgray]
+
+            我们可以把字符串常量赋值给指针型的字符串, 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    char *str = "May the force be with you.";
+
+    printf("%s\n", str);
+
+    str = "So uncivilized."; 
+
+    printf("%s\n", str);
+
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+
+            \begin{sloppypar}
+            但这种直接赋值的写法是\textbf{错误}的, 因为相当于开辟了一段新内存, 用于储存\texttt{So uncivilized.}, 并令\texttt{str}指过去, 但是原来的\texttt{May the force be with you.}仍然留存在内存中的另一处地方没有被释放, 因此造成了内存泄漏.
+            \end{sloppypar}
+
+            \end{mdframed}
+
+        \subsection*{特殊元素}
+            字符串中有一个特殊元素\texttt{\sla 0}, 它的值为0, 它总是字符串的最后一个元素, 表示字符串结束. 也就是说, 一个长度为10的字符串, 最多只能储存9个字符, 因为最后一个元素必须是\texttt{\sla 0}.
+
+            例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    char str[3];
+    str[0] = 'A';
+    str[1] = 'B';
+    str[2] = 'C';
+
+    printf("%s\n",str);
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+            的输出会发生意料之外的错误, 因为\texttt{printf()}读取不到\texttt{\sla 0}, 认为字符串还没有结束, 就会继续读取后续内存并以字符形式输出, 直到读取到值为0的内存. 所以输出可能是乱码例如
+            \begin{center}
+            \begin{longtable}{l}
+                \texttt{AB烫烫烫烫烫烫烫 ]D痨}.
+            \end{longtable}
+            \end{center}
+
+    \section{字符串的处理函数}
+        \subsection*{\texttt{strcat()}}
+            \texttt{strcat()}\footnote{STRing CATenate, 字符串拼接的缩写.}接受两个字符串参数, 会把第二个字符串拼接到第一个之后. 第一个字符串大小需要能够容纳两个字符串, 否则会发生越界错误.
+
+        \subsection*{\texttt{strcpy()}}
+            \texttt{strcpy()}\footnote{STRing CoPY, 字符串拷贝的缩写.}接受两个字符串参数, 会把第二个字符串拷贝到第一个字符串中. 第一个字符串大小需要能够容纳第二个字符串, 否则会发生越界错误.
+
+        \subsection*{\texttt{strcmp()}}
+            \texttt{strcmp()}\footnote{STRing CoMPare, 字符串比较的缩写.}接受两个字符串参数, 会比较两个字符串内容是否相同, 返回真假值.
+
+        \subsection*{\texttt{sprintf()}}
+            \texttt{sprintf()}类似\texttt{printf()}, 只是它的第一个参数是一个字符串指针, 它会把输出结果输出到字符串指针中, 可以理解为虚拟打印机. 它可以方便地完成字符串拼接, 插入, 修改等内容.

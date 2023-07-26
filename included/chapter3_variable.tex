@@ -1,0 +1,774 @@
+\chapter{变量} \label{变量}
+    \section{变量和声明}
+        变量是C语言中的基础, 它就像一个容器, 我们可以使用它储存数据. 我们在使用一个变量前, 首先要声明它, 告知编译器这是一个变量, 它的语法形如
+        \begin{center}
+            \texttt{类型~标识符;}
+        \end{center}
+
+        其中 \texttt{类型} 是这个变量的类型, 例如储存整数的\texttt{int}, 储存实数的\texttt{double}. \texttt{标识符} 是这个变量的名字, 在后文中出现时, 指代我们声明的这个变量. 具体将在后文讲解. 例如下面的例子
+\begin{lstlisting}
+int main(){
+    int a; // 声明一个变量, 数据类型为int, 名字为a. 
+
+    return 0;
+}
+\end{lstlisting}
+
+        在一个变量使用前, 必须先声明. 否则编译器不知道我们在指代什么, 是非法的; 而同一个标识符被声明多次也是非法的. 例如下面的例子会报错:
+        \begin{lstlisting}
+        int main(){
+            a = 7; // 未声明a却使用了a.
+        
+            int b;
+            double b; // 声明了两次b.
+        
+            return 0;
+        }
+        \end{lstlisting}
+
+        对变量最基础的操作是赋值, 一个赋值语句形如
+        \begin{center}
+        \begin{longtable}{l}
+            \texttt{标识符 = 初始值;}
+        \end{longtable}
+        \end{center}
+
+        赋值操作会把 \texttt{标识符} 指代的变量储存的值更新为 \texttt{初始值} . 注意, 这里的等号和数学中的等号含义并不相同. 详见第\ref{赋值运算}节. 例如下面的例子:
+\begin{lstlisting} [caption=\ ,label=c_var_declare_1]
+int main(){
+    int a; // 声明一个int型变量a.
+    a = 1; // a的值更新为1, 后文中再使用a时, 就表示1.
+
+    int b; // 再声明一个int型变量b.
+    b = a; // 把b的值更新为a的值, 即此时b的值为1
+
+    return 0;
+}
+\end{lstlisting}
+
+        此外, 变量也可以在声明时被赋值, 称为初始化, 语法形如
+        \begin{center}
+        \begin{longtable}{l}
+            \texttt{类型~标识符 = 值;}
+        \end{longtable}
+        \end{center}
+
+        例如代码\ref{c_var_declare_1}可以写作
+\begin{lstlisting}
+int main(){
+    int a = 1;
+
+    int b = a;
+
+    return 0;
+}
+\end{lstlisting}
+
+        我们\textbf{建议}, 总是初始化每个变量为一个默认值, 例如总是把每个变量初始化为0.
+
+        注意, 我们可以一次声明多个变量, 并初始化其中的若干个. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    int a = 10, b; // 声明int型变量a, 初始化为10; 再声明int型变量b.
+    float c; // 声明float型变量c.
+    return 0;
+}
+\end{lstlisting}
+    
+    \section{标识符和关键字} \label{标识符和关键字}
+        标识符的命名需要遵循:
+        \begin{itemize}
+            \item 由英文大小写字母, 数字, 下划线组成.
+            \item 不能以数字开头.
+        \end{itemize}
+
+        另外, C语言还保留了一些词, 用于帮助编译器识别语法结构, 例如 \texttt{if} 和 \texttt{for}. 我们的标识符也不能和它们重名, 否则编译器会误以为是语法单元, 而发生意料之外的错误. 我们将在后面的学习中学到更多关键字. 所以还有下面一条规则:
+        \begin{itemize}
+            \item 不能和关键字重名
+        \end{itemize}
+
+        例如这些都是合法的标识符名称:
+        \begin{center}
+            \texttt{abc, str1,  \_this\_one, EnjoyYourself, m1xYm01Kp}
+        \end{center}
+        
+        这些都是不合法的标识符名称:
+        \begin{center}
+            \texttt{123, 2p, wutong.tony@foxmail.com, for}
+        \end{center}
+
+        需要注意的是, 标识符的名称是大小写敏感的, 例如 \texttt{hello} 和 \texttt{Hello} 会被看作两个不同的标识符. 例如下面的例子会报错:
+\begin{lstlisting}
+int main(){
+    int hello = 0, res;
+    res = Hello + 5;
+
+    return 0;
+}
+\end{lstlisting}
+
+        然而合法的标识符名称中, 大家可以看到有的语义不明或混乱, 有的则语义清晰. 当一个项目有数千数万个标识符时, 一个优秀的命名规范能够帮助coder和维护者理解每一个变量的用途, 而不用根据上下文或注释进行猜测. 所以虽然原则上合法的标识符名称都可以编译通过, 但我们仍然\textbf{建议}大家使用如下的命名规范:
+        \begin{itemize}
+            \item 使用英文命名, 不要参杂汉语拼音和其它语言.
+            \item 对于每一类标识符, 使用统一的命名方法.
+            \item 当一个标识符的使用贯穿全文时, 使用复杂的命名指明它的作用; 当一个标识符只是短暂使用时, 使用简洁的命名.
+            \item 尽可能简明扼要的说明这个变量的用途.
+            \item \textbf{不推荐}在变量有明确意义时, 使用诸如\texttt{a1, a2, a3}这样没有意义的命名, 甚至混用表示几个风马牛不相及的变量.
+            \item \textbf{不推荐}在没有使用统一缩写标准时, 大量使用缩写.
+            \item \textbf{不推荐}使用过长的命名.
+        \end{itemize}
+
+        其中命名方法包括下划线命名法, 大驼峰命名法, 小驼峰命名法等. 以``how do you like it''的命名为例, 不同的命名方法下分别写作:
+
+            \textbf{下划线命名法}: \texttt{how\_do\_you\_like\_it}
+
+            \textbf{大驼峰命名法}: \texttt{HowDoYouLikeIt}
+            
+            \textbf{小驼峰命名法}: \texttt{howDoYouLikeIt}   
+
+        我们\textbf{建议}对于变量的命名, 使用下划线命名法. 但是注意这里的命名显然太长了, 只是为了演示不同命名方法才使用的. 当然, 读者现在还不能明白各类变量的命名传统是什么, 但在随后的学习中我们会逐步体会到的.
+
+    \section{数据类型} \label{数据类型}
+        每个变量都有自己的数据类型, 是在声明时就确定的, 不可更改的. 不同的数据类型有不同的表示范围, 当我们试图用它们表示超出自己表示范围的值时, 会发生意料之外的错误, 称为溢出.
+
+        C语言定义了几种基本的数据类型, 包括:
+        \begin{description}
+            \item[整型]  包括\texttt{int}\footnote{整数integer的缩写}, \texttt{short}, \texttt{long}, 用于表示整数. 一般使用\texttt{int}; 当需要减小内存开销, 且需要表示的整数的范围较小时, 使用\texttt{short}; 当需要表示的整数范围很大时, 使用\texttt{long}. 一般使用\texttt{int}即可.\footnote{\texttt{short}也可写作\texttt{short int}, \texttt{long}也可写作\texttt{long int}}
+            \item[浮点型] 包括\texttt{float}和\texttt{double}, 用于表示实数\footnote{严格地说, 浮点数只能表示一部分的有理数. 但因为计算机科学是允许合理误差的, 那么在误差范围内我们认为它们表示实数.}.\texttt{float}精度较低, 但占用内存小; \texttt{double}精度较高, 但占用内存多. 一般使用\texttt{double}即可.
+            \item[字符] \texttt{char}类型, 用于表示字符. 它只能表示ASCII字符, 并且实质上是很短的整型.
+            \item[无类型] \texttt{void}类型. 在后续学习中会出现.  
+        \end{description}
+
+        不同的数据类型的变量在内存中占用的空间也不同(见表\ref{数据类型占用内存表}). 读者无需立即记住这些信息, 但一个优秀的程序员对各个类型占用的内存应该心中有数.
+
+    \section{整型}
+        我们知道\texttt{int}类型占用4个字节, 即一个32位的二进制数. 那么理论上\texttt{int}总共可以表示$ 2 ^ {32} - 1 \approx 4.6 \times 10 ^ {9} $ (46亿) 个数.
+
+        所以\texttt{int}的表示范围其实很大, 在实际应用中往往很难超出限制, 并不需要过多使用\texttt{long}.
+
+        我们为整型变量赋值时, 也可以使用第\ref{进制的表示与转换}节中提到的不同进制表示方法. 除了提到过的0b和0x外, 我们还可以用0作为前缀表示八进制, 但这并不是标准语法. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    int a = 20;         // 十进制
+    int b = 0x14;       // 十六进制
+    int c = 0b00010100; // 二进制
+    int d = 024;        // 八进制
+
+    return 0;
+}
+\end{lstlisting}
+
+        需要注意的是, 二进制的整型常量表示法不是C语言标准, 并不是所有编译器都支持的, 使用时需谨慎.
+
+        整型也支持负数, 它的表示范围从0开始, 向正负两端对称扩展, 所以\texttt{int}的实际表示范围是
+            \[ - 2 ^ {31} + 1 \ \ \sim \ 2 ^{31} - 1 \ \ \footnote{读者可能已经发现, 整型实际可以表示的总数比整型总共可以表示的总数少了一个, 这是因为0和-0被看作了两个数. 这和整型储存格式有关.}\] 
+
+        例如下面的例子:
+\begin{lstlisting}
+int main(){
+    int a = 10;
+    int b = -4;
+    int c = a + b; // c = 10 - 4 = 6
+
+    return 0;
+}
+\end{lstlisting}
+
+        \begin{sloppypar}
+        当我们能够保证某个变量一定非负时, 我们可以在声明时在类型前加上\texttt{unsigned}修饰, 表示这是一个无符号数, 那么这个变量的表示范围就会被拓展到
+            \[ 0 \ \ \sim \ 2 ^ {32} - 1 \]
+        \end{sloppypar}
+
+        \begin{sloppypar}
+        但与此同时它也不再能表示负数, 否则会报错. 特别地, \texttt{unsigned int}也可以简写为\texttt{unsigned}. 例如下面的例子:
+        \end{sloppypar}
+
+\begin{lstlisting}
+int main(){
+    unsigned int a = 10;
+    unsigned b = 15;
+    unsigned short c = 1234;
+    unsigned long int d = 0;
+
+    return 0;
+}
+\end{lstlisting}
+
+    \section{浮点数}
+        浮点数常量有两种表示方法. 
+        
+        第一种形如\texttt{a.b}, 其中\texttt{.}是小数点. 当 b = 0 时, 我们仍然要把\texttt{.0}写出来, 来显式地表示这是一个浮点数而不是整型; 当 a = 0 时 a 是可以省略的. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    float a = 3.14;
+    float a = 2.0;
+    double b = .3; // b = 0.3
+    double c = -2.5;
+
+    return 0;
+}
+\end{lstlisting}
+
+        第二种形如\texttt{aEn}或\texttt{aen}, 表示
+            \[ a \times 10 ^ n. \]
+        例如下面的例子:
+\begin{lstlisting}
+int main(){
+    float a = 314E-2;   // a = 3.14
+    double b = 3e2;     // b = 300
+    double c = -2.5E-3; // c = -0.0025
+
+    return 0;
+}
+\end{lstlisting}
+
+        浮点数也可以用\texttt{unsigned}修饰:
+\begin{lstlisting}
+int main(){
+    unsigned float a = 0.3;
+
+    return 0;
+}
+\end{lstlisting}
+
+        需要注意的是浮点数有精确度问题, 这和浮点数储存格式有关. 例如\texttt{double}型的3.14在内存中的实际值是3.140000000000000124. 虽然误差很小, 但在多次参与运算后, 这些误差累积起来可能给结果产生可观测误差, 从而导致错误结果. 所以在要求精确的程序中, 我们一般不使用浮点数; 而在允许误差的工程代码中, 浮点数有更广泛的应用.
+
+    \section{整型和浮点数}
+        整型和浮点数可以相互赋值, 程序会先自动把浮点数转换为整型, 把整型转换为浮点数. 注意, 浮点数转换为整型时会向下取整. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    int a = 5;
+    double b = 2.5;
+
+    double c = 4; // c = 4.0
+    int d = 3.14; // d = 3
+
+    c = a; // c = 3.0
+    d = b; // b = 2
+
+    return 0;
+}
+\end{lstlisting}
+
+        另外, 整型常量的默认类型为\texttt{int}, 我们可以在它们后面加上\texttt{l}或\texttt{L}修饰, 来表示这是一个\texttt{long}类型的整型. 浮点数常量的默认类型为\texttt{double}, 我们可以在它们后面加上\texttt{f}或\texttt{F}修饰, 来表示这是一个\texttt{float}类型的浮点数. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    int a = 10L;
+    double b = 2.5f;
+
+    return 0;
+}
+\end{lstlisting}
+        
+        读者注意, 把浮点数赋值给一个整型变量是不会警告的, 所以在写代码时一定要注意变量的类型, 不然容易导致BUG而且需要在DEBUG上(消除BUG)浪费很长时间.
+
+    \section{字符}
+        字符常量总是用一对单引号\texttt{''}包裹, 内部只包含一个字符. 这个字符必须是ASCII标准规定的128种字符之一.\footnote{但是并非每种ASCII字符都可以显示, 部分ASCII字符是控制符.}
+        
+        例如这些都是合法的字符常量:
+            \[ \mbox{\texttt{'a', '\#', '8'}} \]
+        
+        这些都是不合法的字符常量:
+            \[ \mbox{\texttt{'ab', '吴'}} \]
+
+        字符变量定义的例子:
+\begin{lstlisting}
+int main(){
+    char ch = 'a';
+
+    return 0;
+}
+\end{lstlisting}
+
+        而字符变量和字符常量本质上都是整型(只是表示范围很小), 它们的值就是字符对应的ASCII码(详见表\ref{ASCII字符集对照表}). 故字符和整型可以互相赋值, 进行计算. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    int a = 'p'; // p的ASCII值为112, 故a的值为112.
+    char b = 85; // 85对应的ASCII码为U, 故b的值为'U'.
+    int c = 'b' + 3 // b的ASCII值为98, 故c = 98 + 3 = 101.
+
+    return 0;
+}
+\end{lstlisting}
+
+        需要注意的是 3 和 \texttt{'3'} 是不同的东西. 前者表示数字3, 后者表示字符\texttt{'3'}. 前者的实际值为3, 后者的实际值为51 (3的ASCII值).
+
+        这里有一个小技巧, 可以把字符转换为它对应的数字, 或者把数字转换为它对应的字符:
+\begin{lstlisting}
+int main(){
+    int val1 = '3' - '0'; 
+    int val2 = '7' - '0';
+    // val1的值为3, val2的值为7.
+
+    char ch1 = 3 + '0';
+    char ch2 = 7 + '0';
+    // ch1的值为'3', ch2的值为'7'.
+
+    return 0;
+}
+\end{lstlisting}
+        
+        这个技巧之所以成立, 是因为ASCII码中0$\sim$9, a$\sim$z, A$\sim$Z都是顺序排列的. 所以用一个数字的字符减去\texttt{'0'}, 就是这个字符相对于0是第几个, 就恰好是这个字符对应的数字. 反之亦然.
+
+        这也是抽象思维的体现. 我们并不需要关心\texttt{'0'}的ASCII码具体是多少, 但我们可以通过逻辑推演把它形式化地运用.
+
+        同理, 可以用这个技巧数出一个字母是第几个字母:
+\begin{lstlisting}
+int main(){
+    int order_of_e = 'e' - 'a' + 1; // order_of_e = 5
+    // 加1是由于表达式'e' - 'a'是从0开始计数的.
+
+    return 0;
+}
+\end{lstlisting}
+
+        字符也有另一种表示方法, 称为转义符, 通过一个反斜杠加上数字, 来表示这个数字对应的ASCII码. 这个数字是八进制数, 如果数字前加上x则是十六进制数. 例如下面这个例子:
+\begin{lstlisting}
+int main(){
+    char a = '\141'; // 字符a
+    char b = '\x61'; // 字符a
+
+    return 0;
+}
+\end{lstlisting}
+
+        如果转义符后的数字大于255, 编译器会报错.(超过ASCII表示范围)
+
+        转义符也可以用来表示一些直接使用会导致歧义的字符, 例如\texttt{'}直接表示会是\texttt{'''}, 编译器会认为前两个引号表示一个字符, 第三个引号是语法错误. 故我们用\texttt{\sla'}表示它. 同理反斜杠自身如果直接表示为\texttt{'\sla'}会被编译器认为和后面的引号共同构成了转义符引发语法错误, 故反斜杠也需要转义表达为\texttt{\sla\sla}.其它还有\texttt{\sla", \sla\%}等(后面会介绍它们作为语法单元的用法). 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    char a = '\'';
+    char b = '\"';
+    char c = '\\';
+    char d = '\%';
+
+    return 0;
+}
+\end{lstlisting}
+
+        此外, 还有一些常用的转义符如\sla n表示换行, \sla t表示缩进. 例如下面的例子:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    printf("abc\n"); // 输出abc后换行.
+    printf("\t\tk"); // 进行两次缩进后输出k.
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+
+    \section{字符串}
+        一个字符串常量总是被一对\texttt{""}包裹, 内部包含若干个字符, 内部字符的规范和字符相同. 字符串的类型为\texttt{char[]}或\texttt{char*}, 但我们还没有学习数组(详见第\ref{数组}章)和指针(详见第\ref{指针}章), 读者暂时无法理解它们的含义. 这里只是简单介绍字符串, 细节我们将放在第\ref{字符串}章.
+
+        下面是字符串定义的例子:
+\begin{lstlisting}
+int main(){
+    char str2[] = "CuWO4";
+    char *str1 = "C语言入门指南";
+
+    return 0;
+}
+\end{lstlisting}
+
+        读者先把这两种定义方式背住即可.
+
+    \section{运算} \label{运算}
+        C语言中对变量, 常量和其它量的操作叫做运算. 例如数学运算符\texttt{+}, 赋值运算符\texttt{=}, 逻辑运算符\texttt{\&\&}等. 运算对若干个量进行运算, 并得到一个结果. 被运算的量叫做操作数, 运算和它的操作数构成的式子叫做表达式, 运算的结果称为返回值, 表达式的值等于运算的返回值.
+
+        例如
+            \[ \mbox{\texttt{3 + 5}} \]
+        这个表达式, 3和5是操作数, +是运算, 表达式的值8.
+
+        表达式也可以作为另外一个运算的操作数, 例如
+            \[ \mbox{\texttt{2 * (3 + 5)}} \]
+        中乘运算(\texttt{*})的第二个操作数就是刚刚的表达式. 整个表达式会先计算括号内的表达式, 得到结果8, 然后再代入乘运算的表达式得到\texttt{2 * 8}, 再计算乘运算后得到整个表达式的值为16.
+
+        有N个操作数的运算符称为N目运算符. 例如上面提到的加运算和乘运算是二目运算符. 一目运算符(又被称为单目运算符)例如负号运算(\texttt{-}), 例如下面这个表达式
+            \[ \mbox{\texttt{-5}} \]
+        就是负号运算符作用于操作数5, 得到表达式的值为-5. 其它的单目运算符例如后面将讲到的非运算符\texttt{!}.
+
+        C语言中只有一个三目运算符, 但较不常用, 涉及的运算也暂时不需要介绍, 详见第\ref{条件运算符}节.
+
+        运算符的作用有先后顺序, 按照不同运算符的优先级, 优先计算级别更高的运算. 例如读者熟悉的四则运算, 乘除优先级更高, 总是先计算; 加减优先级更低, 总是后计算. 例如下面这个表达式
+            \[ \mbox{\texttt{5 - 3 * 2}} \]
+        中, 乘运算优先级更高, 先计算得到6, 然后再计算减运算, 得到整个表达式的值为 -1.
+        
+        同级运算符的计算遵循结合性, 左结合的运算符先计算左边, 右结合的运算符先计算右边. 例如四则运算都是左结合的, 同级运算符从左到右依次计算. 例如下面这个表达式
+            \[\mbox{\texttt{2 + 3 - 7}} \]
+        中, 加运算和减运算优先级相同, 都是左结合的表达式, 故优先计算加运算得到5, 再计算减运算得到整个表达式的值为 -2.
+        
+        当我们想优先计算部分表达式时, 我们可以为它加上括号. 括号内部的运算符依照优先级和结合性计算得到值, 再参与括号外的运算. 例如下面这个表达式
+            \[ \mbox{\texttt{3 + (5 - 2 * 5)}} \]
+        中, 括号内部的运算符依照优先级和结合性计算得到表达式的值为-5, 再参与括号外的加运算得到整个表达式的值为 -2.
+
+        另外, 包含表达式的括号也可以看作表达式, 所以可以为一个表达式添加多层括号, 也可以在单独表达式外添加若干层括号, 虽然我们\textbf{不推荐}这样做. 例如下面的表达式
+            \[ \mbox{\texttt{(((2 + ((1 * 3)))))}} \]
+        和表达式
+            \[ \mbox{\texttt{2 + (1 * 3)}} \]
+        是等价的.
+
+        我们不厌其烦地用小学数学作为例子阐述优先级, 结合性和括号, 是希望读者能够理清思路, 否则可能找来混乱. 读者将在后文中看到这么做的必要性.
+
+        表\ref{运算符优先级表}展示了所有运算符的优先级, 读者不用背住, 后面的章节会介绍常用的运算符优先级, 其它不清楚时查表即可. 
+
+    \section{数学运算}
+        C语言中的数学运算包括单目运算符正号\texttt{+}和负号, 以及四则运算加法\texttt{+}, 减法\texttt{-}, 乘法\texttt{*}和除法\texttt{/}, 以及取余运算\texttt{\%}七种. 读者在前面已经见过它们中的一些的简单应用了, 本节中将介绍若干细节.
+
+        \subsection*{正号和负号}
+            正号运算符是单目运算符, 返回它后面的表达式的值, 几乎没有使用场景. 负号运算符返回它后面的表达式的相反数. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    int a = +3; // a = 3
+    double b = -(1.5 + 1.1); // b = -2.6
+
+    return 0;
+}
+\end{lstlisting}
+
+        \subsection*{加法, 减法和乘法}
+            加法运算符可以求两个数的和, 减法运算符可以求两个数的差, 乘法运算符可以求两个数的积, 我们在前面已经见过了. 特别地, 当它们的操作数一个为整型, 一个为浮点数时, 它们会先把整型转换为浮点数, 然后进行两个浮点数的加, 减或乘, 最后返回一个浮点数, 即使结果是整数. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    double a = 2.1 * 10; // a = 21.0
+    double b = 1.8 + 2; // b = 3.8
+
+    return 0;
+}
+\end{lstlisting}
+
+        \subsection*{除法}
+            类似于加法, 减法, 乘法, 除法在两个操作数一个为整型一个为浮点数时, 会把整型转换为浮点数, 并返回浮点数除浮点数的结果. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    double a = 7.5 / 4.5; // a = 1.666...67
+    double b = 5 / 4.0; // b = 1.25
+    double c = 6 / 3.0; // c = 2.0
+    
+    return 0;
+}
+\end{lstlisting}
+
+            然而除法相较于其它三种四则运算要复杂一些, 因为它在整数上是不封闭的, 也就是说两个整数相除可能得到非整数. 对于这种情况, C语言会在整数除整数, 返回二者的商向下取整, 即整除. 换言之, 如果有式子
+                \[ a \div b = k \cdots m, \qquad a, b, k, m \in \mathbb{Z},\]
+            那么\texttt{a / b}的结果为k.
+
+            例如,
+                \[ 11 \div 3 = 3 \cdots 2,\]
+            则\texttt{11 / 3}的结果为\texttt{3}. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    double a = 11 / 3.0; // a = 3.666...67
+    int b = 11 / 3; // b = 3
+
+    return 0;
+}
+\end{lstlisting}
+
+            注意, 这不是错误行为, 而是某些情况下正确且必要的写法.
+
+        \subsection*{取余}
+            取余运算是一个二目运算符, 操作数必须为两个整型, 它返回第一个数整除第二个数的余数. 换言之, 如果有式子
+                \[ a \div b = k \cdots m, \qquad a, b, k, m \in \mathbb{Z},\]
+            那么\texttt{a \% b} (读作a模b)的结果为m.
+
+            例如,
+                \[ 11 \div 3 = 3 \cdots 2,\]
+            则\texttt{11 \% 3}的结果为\texttt{2}. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    int a = 7 % 2; // a = 1
+
+    return 0;
+}
+\end{lstlisting}
+
+            取余运算(也称模运算)的常见应用包括结合其它运算可以判断一个数的奇偶. 将在第\ref{分支与循环}章中介绍.
+
+    \section{赋值运算} \label{赋值运算}
+        赋值运算符\texttt{=}会把右侧的值赋值给左边, 需要注意:
+        \begin{itemize}
+            \item 左边的表达式必须是可修改的.
+            \item 左右的表达式必须是相同类型的.
+        \end{itemize}
+
+        例如下面的例子都是非法的:
+\begin{lstlisting}
+int func(){
+    return 10;
+}
+
+int main(){
+    int a = 2, b = 3;
+
+    a + b = 10; // 错误, 左边的表达式不可修改.
+    10 = 5; // 错误, 左边的表达式不可修改.
+    a = func; // 错误, 左右表达式类型不同
+
+    return 0;
+}
+\end{lstlisting}
+
+        整型和浮点数可以相互赋值是因为它们在赋值前被自动转换成了对应的类型, 而非它们是相同的类型. 字符和整型可以赋值是因为字符本质是整型.
+
+        我们再来看一段代码:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    int a = 1;
+
+    printf("%d\n", a); // 输出a.
+
+    a = a + 5; @\label{l_var_plusequal}@
+
+    printf("%d\n", a); // 输出a.
+
+    system("%d\n");
+
+    return 0;
+}
+\end{lstlisting}
+
+        读者可以先试着编译运行上面的代码. 可以看到, 结果输出了
+\lstset{
+    numbers=none,
+    keywordstyle=\color[RGB]{0,0,0},
+    commentstyle=\color[RGB]{0,0,0},
+    stringstyle=\color[RGB]{0,0,0}
+}
+\begin{lstlisting}
+1
+6
+\end{lstlisting}
+\lstset{
+    numbers=left,
+    keywordstyle=\color[RGB]{3,95,205},
+    commentstyle=\color[RGB]{34,139,34},
+    stringstyle=\color[RGB]{128,0,0}
+}
+
+        也就是说, 经过第6行这行奇怪的数学上``不成立''的式子, a的值由1增长了5, 变为了6. 
+        
+        事实上, 前文花这么多笔墨介绍运算过程, 就是因为C语言中的运算和数学运算相近但不全相同. 只有了解了底层机制, 才能理解一些看似``奇怪''的行为.
+
+        我们观察这个表达式, 表达式中有赋值运算和加运算, 查表可知加运算优先级更高, 故先处理加运算, 得到结果6, 再把6代入赋值运算中, 表达式变为\texttt{a = 6}, 再处理赋值运算, a的值变为6. 所以因为运算执行的先后关系, 这个表达式的含义就是a自增5. 这就是前文所谓的``赋值运算和数学中的等号不是一个东西''的含义.
+
+        C语言提供了语法糖\footnote{即某种语法的简洁写法.}, 上面第\ref{l_var_plusequal}行代码也可以写作:
+\begin{lstlisting}
+    a += 5;
+\end{lstlisting}
+
+        类似地, 加减乘除模以及其它的运算都有类似的表达, 例如 \texttt{-=}, \texttt{*=}, \texttt{/=}, \texttt{\%=}.
+
+        此外, 赋值运算符是右结合的, 返回值为左式(或右式)的值. 所以我们可以实现连续赋值:
+\begin{lstlisting}
+int main(){
+    int a, b, c;
+    a = b = c = 10; // a = 10, b = 10, c = 10
+
+    return 0;
+}
+\end{lstlisting}
+
+        想想这是为什么.
+
+        但是我们\textbf{不推荐}这么做.
+
+    \section{关系运算}
+        在C语言中, 用数值0表示一个逻辑为假, 用非0值(通常使用1, 后文将不再考虑非1值表示真, 因为在某些标准中这可能出现问题)来表示一个逻辑为真.
+
+        关系运算符有\texttt{>}, \texttt{<}, \texttt{>=}, \texttt{<=}, \texttt{==}和\texttt{!=}六种. 它们分别表示大于, 小于, 大于等于, 小于等于, 等于, 不等于. 它们的返回值为表达式是否成立(为真), 成立(真)时返回1, 不成立(假)时返回0.
+        
+        例如下面这些表达式的值
+            \[\mbox{\texttt{3 >= 1},  \texttt{5 < 4},  \texttt{3 == 1 + 2},  \texttt{6 != 5}} \]
+        分别为1, 0, 1, 1.
+
+        下面的代码依次输出了上面四个表达式的值, 读者可以自行验证:
+\begin{lstlisting}
+#include <stdio.h>
+#include <stdlib.h>
+    
+int main(){
+    printf("%d\n", 3 >= 1);
+    printf("%d\n", 5 < 4);
+    printf("%d\n", 3 == 1 + 2);
+    printf("%d\n", 6 != 5);
+
+    system("pause");
+
+    return 0;
+}
+\end{lstlisting}
+
+        需要注意的是, 新手容易一不小心就把\texttt{==}写作\texttt{=}, 读者不要犯这样的错误. 一般这种情况编译器会有警告.
+
+    \section{逻辑运算}
+        逻辑运算包括逻辑与运算\texttt{\&\&}, 逻辑或运算\texttt{||}, 逻辑非\texttt{!}. 它们的操作数都可以是任意基础类型(除了void), 其中与运算和或运算是二目运算符, 非运算是单目运算符.
+
+        与运算可以理解为先把两端的值转换为真/假, 当两端的值均为真(A真``与''B真同时成立)时, 返回真(1); 否则返回假(0).
+
+        例如下面的表达式的值
+            \[ \mbox{\texttt{1 \&\& 1},  \texttt{1 \&\& 0},  \texttt{0 \&\& 1},  \texttt{0 \&\& 0}} \]
+        分别为1, 0, 0, 0.
+
+        或运算则可以理解为先把两端的值转换为真/假, 当两端的值有任意一个真(A真``或''B真成立)时, 返回真(1); 否则返回假(0).
+
+        例如下面的表达式的值
+            \[ \mbox{\texttt{1 || 1},  \texttt{1 || 0},  \texttt{0 || 1},  \texttt{0 || 0}} \]
+        分别为1, 1, 1, 0.
+
+        非运算则是并``非''A这样, 操作数为真(1)时, 返回假(0); 操作数为假(0)时, 返回真.
+
+        例如下面的表达式的值
+            \[ \mbox{\texttt{!0},  \texttt{!1}} \]
+        分别为1, 0.
+
+        逻辑运算符可以嵌套使用, 例如下面的表达式的值
+            \[ \mbox{\texttt{!(1 \&\& 0) || 0}} \]
+        为1.
+        
+        但除了非运算符优先级很高外, 与运算和或运算的优先级常常搞不清楚谁先谁后, 所以我们\textbf{建议}与运算和或运算综合使用时, 都打上括号.
+
+        逻辑运算符通常和关系运算符搭配起来使用, 例如表达式
+            \[ \texttt{x >= 0 \&\& x <5} \]
+        就表示变量x在$[0,\,5)$的范围时返回真, 否则返回假. 它们的具体用法将在第\ref{分支与循环}章中详细介绍.
+
+    \section{自增和自减}
+        对于整型变量x, C语言提供了\texttt{x += 1}和 \texttt{x -= 1}的语法糖, 分别记作\texttt{x++}或\texttt{++x}, 以及\texttt{x--}或\texttt{--x}. 它们被称为自增/自减.
+
+        例如下面三段代码是完全等价的:
+\begin{lstlisting}
+int main(){
+    int a = 0;
+    a += 1;
+    a -= 1;
+
+    return 0;
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+int main(){
+    int a = 0;
+    a++;
+    a--;
+
+    return 0;
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+int main(){
+    int a = 0;
+    ++a;
+    --a;
+
+    return 0;
+}
+\end{lstlisting}
+
+        也可以把这些式子用在表达式中, 但是结果会有所不同. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    int a1 = 0;
+    int b1 = a1++; // b1 = 0, a1 = 1
+
+    int a2 = 0;
+    int b2 = ++a2; // b2 = 1, a2 = 1
+    return 0;
+}
+\end{lstlisting}
+
+        语句后的注释标注了代码执行后的结果. 造成这种情况的原因是\texttt{a++}语句优先级较低, 会先执行语句再执行自增; \texttt{++a}语句优先级较高, 会先执行自增再执行语句.
+
+        然而, 这种做法是\textbf{非常错误}的, 我们\textbf{不推荐}这么做, 也不准备继续辨析这些概念.
+
+        因为这种先后关系根据不同编译器有不同的表现, 只是现在有大量程序员这么用, 编译器才基本都进行了这样的实现. 但是换用较古早的编译器, 就可能引入BUG. 某些意义上, 这属于UB(Undefined Behavior, 未定义行为的缩写), 而C语言标准中UB由编译器自行处理. 也就是说, 编译器在检测到UB语句后, 即使在终端打开了一个井字棋(部分编译器确实有这样的彩蛋行为)也是完全符合标准的. 
+        
+        消除UB行为能够换来更健壮的程序, 可读性和可维护性更好的代码, 而代价只是多写一行代码; 反之, 为了少些一行代码, 却留下了隐患, 可能在未来留下无穷无尽的问题, 这是得不偿失的. 因此, 为了代码的可移植性, 可读性和稳定性, 我们\textbf{建议}总是把自增自减语句独立成句. 除此之外, 我们\textbf{建议}读者在今后的编程生涯中, 能够减少很多歧义和隐藏BUG, 而代价只是多写一行代码时, 不要偷懒. 尽可能不使用可能导致UB的代码.
+
+    \section{数据类型强制转换} \label{数据类型强制转换}
+        除了计算机自动帮我们转换类型(例如浮点数和整型的例子)外, 我们也可以显式地转换变量类型. 语法是
+            \[ \mbox{\texttt{(类型)变量或常量}} \]
+
+        当我们把浮点数转换为整型时, 会向下取整. 当我们把超过某种类型表达范围的数转换为这种类型时, 会得到意料之外的结果(这与对应类型的储存方式有关)\footnote{但这在某些算法的实现中起到了重要作用, 例如雷神之锤内核中的平方根倒数算法. 事实上这段精彩的代码也是指南的封面.}. 某些类型之间不能转换.
+        
+        例如下面的例子:
+\begin{lstlisting}
+int main(){
+    int a = (int)2.5; // 由于自动类型转换, 和int a = 2.5; 等价, a = 2
+    double b = (double)a; // 同上, b = 2.0
+    int c = (int)1000000000000; // 超过范围, c = -727379968
+    char *str = (char*)10; // 错误, 没有整型转换为字符串的转换方式.
+
+    return 0;
+}
+\end{lstlisting}
+
+    \section{\texttt{*}位运算\texttt{*}} \label{位运算}
+        位运算包括按位与运算\texttt{\&}, 按位或运算\texttt{|}, 按位异或运算\texttt{\^{}}, 按位非运算\texttt{\~{}}(也成为按位取反运算), 左移运算\texttt{<<}和右移运算\texttt{>>}.
+
+        前三者都是二目运算符, 他们把操作数转换为二进制, 然后逐位进行与, 或和异或运算, 然后又把结果逐位排列成为一个二进制数, 作为返回值. 按位非则是把操作数的所有二进制位倒转(0变1, 1变0)作为返回值返回.
+
+        表\ref{异或运算结果表}展示了对操作数1和操作数2进行异或运算后的结果.
+
+        \begin{table}[htbp]
+            \centering
+            \renewcommand\arraystretch{1.5}
+            \begin{tabular}{c c|c}
+                操作数1 & 操作数2 & 结果 \\
+                \hline
+                0       & 0      & 0    \\
+                1       & 0      & 1    \\
+                0       & 1      & 1    \\
+                1       & 1      & 0    \\
+            \end{tabular}
+            \caption{异或运算结果表} \label{异或运算结果表}
+        \end{table}
+
+        可以看到, 当操作数相同时, 异或结果为0. 当操作数不同时, 异或结果为1.
+
+        异或运算又被称为半加器, 即一个不进位的二进制加法器. 那么 0 + 0 = 0, 0 + 1 = 1, 1 + 0 = 1, 1 + 1 = 1(原为11)就很容易理解了.
+
+        负数在内存中的储存结构较复杂, 在这里不会讨论按位取反结果.
+
+        左右移运算则是一个二目运算, 表示把左操作数的二进制整体向左或右移动右操作数位, 超出范围的舍去, 空缺的补0.
+
+        例如\texttt{0b110 << 2}的结果为\texttt{0b11000}, \texttt{0b110 >> 2}的结果为\texttt{0b1}. 在不超出范围的情况下, \texttt{a << n}的结果为$a\times 2^n$, \texttt{a >> n}的结果为$a$整除$2^n$, 想想这是为什么.
+
+        下面展示了位运算的例子:
+\begin{lstlisting}
+int main(){
+    int a = 5 & 6;  // 101 & 110 = 100, a = 4
+    int b = 5 | 6;  // 101 | 110 = 111, b = 7
+    int c = 5 ^ 6;  // 101 ^ 110 = 011, c = 3
+    int d = ~5;     // d = -6
+    int e = 3 << 1; // e = 6
+    int f = 5 >> 1; // f = 2
+
+    return 0;
+}
+\end{lstlisting}
+
+        位运算具有高速的特点, 但代价是晦涩难懂, 可用于加速代码, 指南不会过多涉及. 我们将在第\ref{分支与循环}章中讨论其中一种简单应用.
+
+    \section{\texttt{*}逗号运算\texttt{*}} \label{逗号运算}
+        逗号运算符\texttt{,}是优先级最低的运算符, 它是一个二目运算符, 效果是依次计算左右两个表达式的值, 并返回右式的结果.
+
+        我们可以用逗号运算符来在一行中运行多个语句. 例如下面的例子:
+\begin{lstlisting}
+int main(){
+    int a = 4, b = 5;
+    a = 6, printf("%d, %d\n", a, b); // 先把6赋值给a, 再依次打印a和b的值.
+
+    return 0;
+}
+\end{lstlisting}
+        
+        但除了声明变量外, 我们\textbf{不推荐}这么做.
+
+        指南将在第\ref{分支与循环}章中介绍关于逗号运算符的一个技巧, 能够帮助我们的代码更优雅.

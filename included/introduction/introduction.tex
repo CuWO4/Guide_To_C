@@ -19,6 +19,7 @@
 \usepackage{multirow}
 \usepackage{booktabs}
 \usepackage{wallpaper}
+\usepackage{makecell}
 
 \usepackage{zhnumber}
 \renewcommand{\thechapter}{\zhnum{chapter}}
@@ -60,7 +61,7 @@
 {\filcenter\heiti\bfseries\fontsize{60pt}{72pt}\selectfont}
 {\fontsize{45pt}{54pt}\selectfont 第\thechapter 章}
 {0pt}
-{\thispagestyle{empty} \ThisCenterWallPaper{1}{pic/chapter_title_background.png} \pagecolor{white}}
+{\thispagestyle{empty} \pagecolor{white}}
 [\newpage] % creates the new page
 
 \makeatletter % 这段代码能够修改前言, 说明和后记的章节标题样式, 原理未知, 为什么不修改正文章节标题未知.
