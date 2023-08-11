@@ -7,17 +7,17 @@
         \subsection*{DevCpp}
             一款轻量级的简单IDE, 配置简单, 基本可以满足初学者的需求, 也被广泛应用于信息学奥林匹克竞赛. 推荐.
 
-            \href{https://sourceforge.net/projects/orwelldevcpp/}{安装地址}. 初次启动需选择配置, 除语言外全部默认即可.
+            安装地址: \href{https://sourceforge.net/projects/orwelldevcpp/}{https://sourceforge.net/projects/orwelldevcpp/}. 初次启动需选择配置, 除语言外全部默认即可.
 
         \subsection*{VSCode}
             一款轻量级, 高扩展的多语言IDE, 可以通过安装扩展或写脚本的方式自定义功能, 是目前世界范围内被最广泛使用的IDE. 但是不自带C语言编译器, 需自己安装并配置. 具体请自行研究. 推荐.
 
-            \href{https://code.visualstudio.com/}{安装地址}.
+            安装地址: \href{https://code.visualstudio.com/}{https://code.visualstudio.com/}.
 
         \subsection*{Visual Studio}
             一款重量级, 面向工程项目的IDE, 功能强大且复杂, 初学者几乎都用不到, 且体积巨大. 不推荐.
 
-            \href{https://visualstudio.microsoft.com/zh-hans/vs/}{安装地址}
+            安装地址: \href{https://visualstudio.microsoft.com/zh-hans/vs/}{https://visualstudio.microsoft.com/zh-hans/vs/}.
 
         安装好IDE后, 创建新文件, 命名为\texttt{HelloWorld.c}或\texttt{HelloWorld.cpp}(.c是C语言源代码后缀, .cpp是C++源代码后缀), 在出现的界面里就可以输入代码了.
 
@@ -48,7 +48,7 @@ int main(){
 }
 \end{lstlisting}
 
-        这个命令表示我们引用了\texttt{stdio.h}这个头文件. 头文件指的是提前编写了特定的常用功能的文件, 常常以\texttt{.h}作为后缀, 也被称为库. 其中, 被提前预置在编译器中的头文件被称为C语言标准库\footnote{参见: \href{https://www.runoob.com/cprogramming/c-standard-library.html}{菜鸟教程}}. 我们通过引用它们, 就可以直接使用其中预先编写的内容. 例如\texttt{stdio.h}是STanDard Input and Output的缩写, 包含了输入输出常用的功能. 我们想要输出``Hello, World!'', 就需要先引用它.
+        这个命令表示我们引用了\texttt{stdio.h}这个头文件. 头文件指的是提前编写了特定的常用功能的文件, 常常以\texttt{.h}作为后缀, 也被称为库. 其中, 被提前预置在编译器中的头文件被称为C语言标准库\footnote{参见菜鸟教程: \href{https://www.runoob.com/cprogramming/c-standard-library.html}{https://www.runoob.com/cprogramming/c-standard-library.html}.}. 我们通过引用它们, 就可以直接使用其中预先编写的内容. 例如\texttt{stdio.h}是STanDard Input and Output的缩写, 包含了输入输出常用的功能. 我们想要输出``Hello, World!'', 就需要先引用它.
 
         要想引用一个头文件, 我们需要在代码最开头使用\texttt{\#include}命令, 其后接着用尖括号\texttt{<>}或双引号\texttt{""}包裹的头文件名. 被引用的对象可以是被内置在编译器中的C语言标准库, 也可以是我们自定义的头文件. 我们\textbf{建议}总是用尖括号包裹C语言标准库. 由于我们不涉及多文件编程, 如何自定义头文件和双引号包裹头文件的作用我们略过.
 
