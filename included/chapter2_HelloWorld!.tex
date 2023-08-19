@@ -1,15 +1,17 @@
 \chapter{你好, 世界!} \label{你好, 世界!}
-    用输出``Hello, World!''作为测试程序的做法最早可见于1978年出版的书籍\emph{The C Programming Language}, 而后成为了程序界的传统, 往往使用输出``Hello, World!''来作为一上手新语言的第一个程序, 以测试环境配置是否完善, 以及使用者是否已初步理解该语言的语法. 本章也将遵循此传统, 带领读者创建并运行第一个C语言程序——一个输出``Hello, World!''的程序.
+    用输出``Hello, World!''作为测试程序的做法最早可见于1978年出版的书籍\emph{The C Programming Language}, 而后成为了程序界的传统. 程序员往往使用输出``Hello, World!''作为上手新语言的第一个程序, 以测试环境配置是否完善, 以及使用者是否已初步理解该语言的语法. 本章也将遵循此传统, 带领读者创建并运行第一个C语言程序——一个输出``Hello, World!''的程序.
 
-    \section{IDE的安装}
-        我们在前面的章节已经提到了编译器, 想要编写并运行C语言程序, 编译器显然是必不可少的. 然而实际开发中, 除编译器外, 我们还会使用文本编辑工具, 调试工具等等配套工具, 我们把配套的代码开发工具称为集成开发环境(IDE, Integrated Development Environment). 本节中我们将介绍三种常用IDE. 需要注意, 本节中的IDE都同时支持C和C++, 但我们把C语言代码写在C++文件中, 并用C++编译器编译也是完全没问题的.
+    \section{IDE}
+        我们已经在前面的章节提到了编译器. 实际开发中, 除编译器外, 我们还会用到文本编辑工具, 调试工具等等配套工具, 以增加开发效率. 我们把配套的代码开发工具称为集成开发环境(IDE, Integrated Development Environment). 读者可以把IDE理解为工作台.本节中我们将介绍三种常用IDE及其安装. 
+        
+        值得注意的是, 虽然本节中的IDE都同时支持C和C++, 我们把C语言代码写在C++文件中, 并用C++编译器编译, 一般是没问题的, 但我们\textbf{不建议}读者这样做.
         
         \subsection*{DevCpp}
             一款轻量级的简单IDE, 配置简单, 基本可以满足初学者的需求, 也被广泛应用于信息学奥林匹克竞赛. 推荐.
 
             安装地址: \href{https://sourceforge.net/projects/orwelldevcpp/}{https://sourceforge.net/projects/orwelldevcpp/}. 初次启动需选择配置, 除语言外全部默认即可.
 
-        \subsection*{VSCode}
+        \subsection*{VS Code}
             一款轻量级, 高扩展的多语言IDE, 可以通过安装扩展或写脚本的方式自定义功能, 是目前世界范围内被最广泛使用的IDE. 但是不自带C语言编译器, 需自己安装并配置. 具体请自行研究. 推荐.
 
             安装地址: \href{https://code.visualstudio.com/}{https://code.visualstudio.com/}.
@@ -19,10 +21,10 @@
 
             安装地址: \href{https://visualstudio.microsoft.com/zh-hans/vs/}{https://visualstudio.microsoft.com/zh-hans/vs/}.
 
-        安装好IDE后, 创建新文件, 命名为\texttt{HelloWorld.c}或\texttt{HelloWorld.cpp}(.c是C语言源代码后缀, .cpp是C++源代码后缀), 在出现的界面里就可以输入代码了.
+        安装并打开IDE后, 创建新文件, 命名为\texttt{HelloWorld.c}并打开, 在出现的界面里就可以输入代码了.
 
     \section{主函数和语句} \label{主函数和语句}
-        C语言程序中必须有并且只有一个\texttt{main}函数, 被称为主函数. 主函数是程序的入口, 程序总会从主函数开始运行. 我们在刚刚创建的文件中输入
+        C语言程序中必须有并且只有一个\texttt{main}函数, 被称为主函数. 主函数是程序的入口, 程序总从主函数开始运行. 我们在刚刚创建的文件中输入:
 \begin{lstlisting}
 int main(){
 
@@ -38,7 +40,13 @@ int main(){
         读者尚不能理解``函数''``返回''等概念, 就暂且把这当作固定语法, 表示程序的开始和结束. 在完成第\ref{函数}章的学习后, 读者就能理解这些概念了.
 
     \section{头文件} \label{头文件}
-        我们在代码的最开头添加上\texttt{\#include <stdio.h>}, 添加后形如:
+        头文件是包含了特定功能的文件, 常常以\texttt{.h}作为后缀, 也被称为库. 通过引用它们, 我们可以使用其中的功能. 其中, 按照C语言标准被预置在编译器中的头文件被称为C语言标准库\footnote{参见菜鸟教程: \href{https://www.runoob.com/cprogramming/c-standard-library.html}{https://www.runoob.com/cprogramming/c-standard-library.html}.}.
+
+        我们想要使用输出功能以输出 \texttt{Hello, World!}, 就需要引用标准库 \texttt{stdio.h}. 这个标准库是STDard Input and Output的缩写, 包含了常用的输入输出功能.
+
+        要想引用一个头文件, 我们需要在代码最开头使用\texttt{\#include}命令, 其后接着用尖括号\texttt{<>}或双引号\texttt{""}包裹的头文件名. 被引用的对象可以是被内置在编译器中的C语言标准库, 也可以是我们自定义的头文件. 我们\textbf{建议}总是用尖括号包裹C语言标准库. 由于我们不涉及多文件编程, 如何自定义头文件和双引号包裹头文件的作用我们略过.
+
+        综上, 我们在代码的最开头添加上\texttt{\#include <stdio.h>}, 添加后形如:
 \begin{lstlisting}
 #include <stdio.h>
 
@@ -48,14 +56,12 @@ int main(){
 }
 \end{lstlisting}
 
-        这个命令表示我们引用了\texttt{stdio.h}这个头文件. 头文件指的是提前编写了特定的常用功能的文件, 常常以\texttt{.h}作为后缀, 也被称为库. 其中, 被提前预置在编译器中的头文件被称为C语言标准库\footnote{参见菜鸟教程: \href{https://www.runoob.com/cprogramming/c-standard-library.html}{https://www.runoob.com/cprogramming/c-standard-library.html}.}. 我们通过引用它们, 就可以直接使用其中预先编写的内容. 例如\texttt{stdio.h}是STanDard Input and Output的缩写, 包含了输入输出常用的功能. 我们想要输出``Hello, World!'', 就需要先引用它.
-
-        要想引用一个头文件, 我们需要在代码最开头使用\texttt{\#include}命令, 其后接着用尖括号\texttt{<>}或双引号\texttt{""}包裹的头文件名. 被引用的对象可以是被内置在编译器中的C语言标准库, 也可以是我们自定义的头文件. 我们\textbf{建议}总是用尖括号包裹C语言标准库. 由于我们不涉及多文件编程, 如何自定义头文件和双引号包裹头文件的作用我们略过.
+        这样, 我们就引用了 \texttt{stdio.h}, 并能在后续的代码中使用输出功能了.
 
     \section{空白符和注释} \label{空白符和注释}
-        我们注意到, 我们的代码中被添加了若干个空行和缩进(按tab键输入), 但这并没有影响我们的程序. 这是因为空格, 回车和缩进被称为空白符, 多余的空白符会在编译的第一个阶段被去除, 因此, 我们可以在代码的任意地方(除了单词之间)添加任意多个空白符
+        我们注意到, 我们的代码中被添加了若干个空格, 空行和缩进(按tab键输入), 它们被称为空白符. 多余的空白符会在编译的第一个阶段被去除, 因此, 我们可以在代码的任意地方(除了单词之间)添加任意多个空白符.
 
-        但空白符也有其作用, 我们观察下面两段程序:
+        空白符有其作用, 我们观察下面两段程序:
 \begin{lstlisting}
 int main(){
     int a = 0, b = 1;
@@ -73,7 +79,7 @@ return 0;
 }
 \end{lstlisting}
 
-        两段程序语义完全一样, 但第一段程序整洁有序, 第二段程序杂乱恼人. 这说明恰当添加空白符可以使代码整齐, 干净, 并且能让逻辑结构更加清晰, 便于阅读和修改. 我们\textbf{建议}读者使用如下的空白符规则:
+        根据空白符规则我们知道, 两段程序语义完全一样, 但第一段程序整洁有序, 第二段程序杂乱恼人. 这说明恰当添加空白符可以使代码整齐, 干净, 并且能让逻辑结构更加清晰, 便于阅读和修改. 我们\textbf{建议}读者使用如下的空白符规则:
         \begin{itemize}
             \item 每一个进入一个大括号内部, 所有语句添加一个缩进.
             \item 运算符两端各添加一个空格.
@@ -95,17 +101,83 @@ int main(){
 
         我们可以在注释中添加对代码的解释和标注, 提高代码的可读性.
 
-        此外, 我们在调试代码时, 遇到需要临时去掉一部分代码时, 我们可以将其注释掉, 这样在编译时它们就会被忽略. 我们也可以使用快捷键, 先框选需要被注释掉的代码, 使用\texttt{ctrl + /}即可将其注释掉, 再按一次即可去掉其注释.
+        此外, 调试代码时, 有时需要临时去掉一部分代码. 我们这时可以将其注释掉, 这样在编译时它们就会被忽略. 我们也可以使用快捷键: 先选中需要被注释掉的代码, 然后使用\texttt{ctrl+/}即可将其注释掉, 再使用一次\texttt{ctrl+/}即可使被注释掉的文本恢复.
 
     \section{警告与错误} \label{警告与错误}
-        当我们出现语法错误, 程序无法正常完成编译时, 编译器将中止编译并抛出一个错误. 当我们语法正确, 但语义可能出现歧义, 或出现可能是疏忽导致的语义错误时, 编译器会正常完成编译并抛出一个警告. 错误是必须被解决的; 警告往往是需要被解决的, 如果程序员明确知道警告是个错误的警告时, 也可以忽视, 但对于初学者, 我们\textbf{建议}解决每一个警告.
+        当我们的程序有语法错误, 无法正常编译时, 编译器会停止编译, 并抛出一个错误, 错误信息会告知我们错误的位置和原因, 我们需要解决错误以完成编译.
 
-        错误的警告品类十分繁杂, 读者遇到时可根据报错信息自行解决.
+        例如我们试图编译下面的程序:
+\begin{lstlisting}
+int main(){
+    int a;
+    int a;
+
+    return 0;
+}
+\end{lstlisting}
+        编译器会抛出错误, 错误信息\footnote{不同的编译器给出的错误信息格式不同, 读者得到不同的错误信息, 但大体上是一个意思.}为:
+\lstset{
+    numbers=none,
+    keywordstyle=\color[RGB]{0,0,0},
+    commentstyle=\color[RGB]{0,0,0},
+    stringstyle=\color[RGB]{0,0,0}
+}
+\begin{lstlisting}
+foo.c: In function 'main':
+foo.c:3:9: error: redeclaration of 'a' with no linkage
+    3 |     int a;
+      |         ^
+foo.c:2:9: note: previous declaration of 'a' was here
+    2 |     int a;
+      |         ^
+\end{lstlisting}
+\lstset{
+    numbers=left,
+    keywordstyle=\color[RGB]{3,95,205},
+    commentstyle=\color[RGB]{34,139,34},
+    stringstyle=\color[RGB]{128,0,0}
+}
+        告知我们在 \texttt{foo.c}这个程序的的 \texttt{main}函数的第3行出现重复定义的错误, 编译中断.
+
+        警告与错误类似, 当我们的程序出现可能具有歧义, 或明显的语义错误时, 编译器虽然会完成编译, 但会抛出警告, 警示程序员. 如果程序员清楚的知道自己的程序没有问题, 而是编译器误报了, 那么可以忽略警告. 但一般来讲, 出现警告往往意味着程序有不严谨的地方, 我们\textbf{建议}读者解决每一个警告.
+
+        例如我们试图编译下面的程序:
+\begin{lstlisting}
+int main(){
+    int a = 0;
+
+    a = a++ + ++a;
+
+    return 0;
+}
+\end{lstlisting}
+        编译器虽然完成了编译, 但会抛出以下警告\footnote{也可能不抛出警告, 取决于对编译器的设置.}:
+\lstset{
+    numbers=none,
+    keywordstyle=\color[RGB]{0,0,0},
+    commentstyle=\color[RGB]{0,0,0},
+    stringstyle=\color[RGB]{0,0,0}
+}
+\begin{lstlisting}
+foo.c: In function 'main':
+foo.c:4:7: warning: operation on 'a' may be undefined [-Wsequence-point]
+    4 |     a = a++ + ++a;
+      |     ~~^~~~~~~~~~~
+\end{lstlisting}
+\lstset{
+    numbers=left,
+    keywordstyle=\color[RGB]{3,95,205},
+    commentstyle=\color[RGB]{34,139,34},
+    stringstyle=\color[RGB]{128,0,0}
+}
+        告知程序员, 第4行对变量a进行的运算可能存在问题.
+
+        错误和警告的品类十分繁杂, 指南中将提到其中常见的, 其余未提到的读者可根据报错信息自行搜索解决.
 
     \section{第一个C语言程序} \label{第一个C语言程序}
         接下来, 我们使用 \texttt{stdio.h}中提供的\texttt{printf()}函数来输出\texttt{Hello, World!}.
 
-        我们在主函数下一行加上\texttt{printf("Hello, World!");}, 这个语句表示将\texttt{Hello, World!}输出到控制台中, 修改后形如:
+        我们在主函数中加上\texttt{printf("Hello, World!");}语句, 这个语句表示将\texttt{Hello, World!}输出到控制台中, 添加后形如:
 \begin{lstlisting}
 #include <stdio.h>
 
@@ -116,7 +188,7 @@ int main(){
 }
 \end{lstlisting}
 
-        然后根据安装的IDE, 进行编译. 现在我们源代码同目录中应该有一个\texttt{HelloWorld.exe}文件, 双击运行.
+        然后根据安装的IDE的操作方式编译源文件. 现在我们源代码同目录中应该有一个\texttt{HelloWorld.exe}文件, 双击运行.
 
         读者应该看到一个黑框一闪而过. 这是因为我们的程序运行的非常快, 它输出完\texttt{Hello, World!}后就立刻关闭了, 所以我们看不见输出内容. 我们需要让它在输出后等待. 现在, 我们将代码改成:
 \begin{lstlisting}
@@ -131,7 +203,7 @@ int main(){
 }
 \end{lstlisting}
 
-        我们引用了另一个头文件\texttt{stdlib.h}(STanDard LIBrary), 并使用了其中\texttt{system()}函数进行程序暂停. 再次编译并运行, 我们应当看见:
+        我们引用了另一个头文件\texttt{stdlib.h}(STanDard LIBrary), 并使用了其中\texttt{system()}函数使程序暂停. 再次编译并运行, 我们应当看见:
 \lstset{
     numbers=none,
     keywordstyle=\color[RGB]{0,0,0},
@@ -149,4 +221,15 @@ Hello, World!
     stringstyle=\color[RGB]{128,0,0}
 }
 
-        \texttt{system("pause");}在指南后续还会出现, 但我们将略去输出中的``按下任意键继续...''. 至此, 我们的第一个C语言程序完成了. 你好, 世界!
+        ``按下任意键继续...''即是 \texttt{system("pause");}语句的效果. \texttt{system("pause");}在指南后续还会出现, 但我们将略去输出中的``按下任意键继续...''. 
+        
+        至此, 我们的第一个C语言程序完成了. 你好, 世界!
+
+    \sumrule
+    \section*{小结}
+        \begin{itemize}
+            \item 每个程序必须有且只有一个主函数, 它是程序的开始执行的地方.
+            \item 头文件包含了特定功能, 通过引用它们我们可以使用这些功能. 其中按照C语言标准被预置在编译器中的头文件被称为标准库. 标准库\texttt{stdio.h}可以提供输入输出功能.
+            \item 空白符和注释对程序语义没有影响, 但可以使程序变得整洁美观.
+            \item 错误是使程序无法完成编译的语法错误. 警告是编译器认为存在歧义或存在问题的语义错误.
+        \end{itemize}
